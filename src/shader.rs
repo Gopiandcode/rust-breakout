@@ -8,7 +8,7 @@ pub struct Shader {
     useShader: bool
 }
 
-pub fn utf8_to_string(bytes: &[GLchar]) -> String {
+pub fn glchar_to_string(bytes: &[GLchar]) -> String {
     let mut vector : Vec<u8> = Vec::new();
 
     for &i in bytes.iter() {
@@ -16,6 +16,16 @@ pub fn utf8_to_string(bytes: &[GLchar]) -> String {
     }
 
     String::from_utf8(vector).unwrap()
+}
+
+pub fn string_to_glchar(bytes: &[u8]) -> Vec<GLchar> {
+   let mut vector: Vec<GLchar> = Vec::new();
+
+    for &i in bytes.iter() {
+        vector.push(i as GLchar);
+    }
+
+    vector
 }
 
 impl Shader {
@@ -115,7 +125,7 @@ impl Shader {
             gl::GetShaderiv(object, gl::COMPILE_STATUS, &mut success);
             if success != 0 {
                 gl::GetShaderInfoLog(object, 1024, ptr::null_mut(), infoLog.as_mut_ptr());
-                let string = utf8_to_string(&infoLog);
+                let string = glchar_to_string(&infoLog);
                 println!("| ERROR::SHADER: Compile-time error: Type: {} \n{}\n -- ---------------------------------------------------- -- ", object_t, string);
             }
         } else {
@@ -124,7 +134,7 @@ impl Shader {
             if success != 0 {
                 gl::GetProgramInfoLog(object, 1024, ptr::null_mut(), infoLog.as_mut_ptr());
             }
-            let string = utf8_to_string(&infoLog);
+            let string = glchar_to_string(&infoLog);
             println!("| ERROR::SHADER: Link-time error: Type: {} \n{}\n -- ---------------------------------------------------- -- ", object_t, string);
         }
 

@@ -37,6 +37,15 @@ impl Texture {
         }
     }
 
+    pub fn set_alpha(&mut self, alpha: bool) {
+        if alpha {
+            self.internal_format = gl::RGBA;
+            self.image_format = gl::RGBA;
+        } else {
+            self.internal_format = gl::RGB;
+            self.image_format =  gl::RGB;
+        }
+    }
 
     pub unsafe fn generate(&mut self, width: GLuint, height: GLuint, data: *const c_void) {
 
