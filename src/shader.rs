@@ -5,7 +5,7 @@ use gl::types::{GLuint, GLint, GLfloat, GLboolean, GLchar, GLsizei};
 
 pub struct Shader {
     id : GLuint,
-    useShader: bool
+    use_shader: bool
 }
 
 pub fn glchar_to_string(bytes: &[GLchar]) -> String {
@@ -33,12 +33,12 @@ impl Shader {
 
         Shader {
             id: 0,
-            useShader: false
+            use_shader: false
         }
     }
 
     pub fn setUseShader(&mut self, useShader: bool) {
-       self.useShader = useShader;
+       self.use_shader = useShader;
     }
 
     pub fn setActive(&self) {
@@ -47,7 +47,13 @@ impl Shader {
         }
     }
 
-    unsafe fn useShader(&self) {
+    pub unsafe fn delete(&mut self) {
+       gl::DeleteProgram(self.id);
+        self.id = 0;
+        self.use_shader = false;
+    }
+
+    pub unsafe fn useShader(&self) {
         gl::UseProgram(self.id);
     }
 
@@ -77,7 +83,7 @@ impl Shader {
     }
 
     pub unsafe fn setFloat(&mut self, name : &[GLchar], value : GLfloat) {
-        if self.useShader {
+        if self.use_shader {
                 self.useShader();
         }
 
@@ -85,7 +91,7 @@ impl Shader {
     }
 
     pub unsafe fn setInt(&mut self, name : &[GLchar], value : GLint) {
-        if self.useShader {
+        if self.use_shader {
             self.useShader();
         }
 
@@ -93,7 +99,7 @@ impl Shader {
     }
 
     pub unsafe fn setVector2f(&mut self, name : &[GLchar], value : &[GLfloat; 2]) {
-        if self.useShader {
+        if self.use_shader {
             self.useShader();
         }
 
@@ -101,7 +107,7 @@ impl Shader {
     }
 
     pub unsafe fn setVector3f(&mut self, name : &[GLchar], value : &[GLfloat; 3]) {
-        if self.useShader {
+        if self.use_shader {
             self.useShader();
         }
 
@@ -109,7 +115,7 @@ impl Shader {
     }
 
     pub unsafe fn setMatrix4(&mut self, name : &[GLchar], value : &[GLfloat; 16]) {
-        if self.useShader {
+        if self.use_shader {
             self.useShader();
         }
 

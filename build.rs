@@ -20,7 +20,4 @@ fn main() {
     bindings.write_to_file(out_path.join("SOIL_bindings.rs"))
         .expect("Couldn't write bindings!");
 
-    panic!("Anay");
-
-
 }

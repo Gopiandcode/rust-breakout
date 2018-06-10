@@ -18,9 +18,10 @@ pub struct Texture {
 
 
 impl Texture {
+
     pub fn new() -> Self {
-        let mut id = 0;
-        unsafe {
+            let mut id = 0;
+            unsafe {
             gl::GenTextures(1 ,&mut id);
         }
 
@@ -45,6 +46,10 @@ impl Texture {
             self.internal_format = gl::RGB;
             self.image_format =  gl::RGB;
         }
+    }
+
+    pub fn is_alpha(&self) -> bool {
+        self.image_format == gl::RGBA
     }
 
     pub unsafe fn generate(&mut self, width: GLuint, height: GLuint, data: *const c_void) {
@@ -72,5 +77,11 @@ impl Texture {
         gl::BindTexture(gl::TEXTURE_2D, self.id);
     }
 
+    pub unsafe fn delete(&mut self) {
+        gl::DeleteTextures(1, &self.id);
+        self.id = 0;
+        self.width = 0;
+        self.height = 0;
+    }
 }
 
