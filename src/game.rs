@@ -1,6 +1,7 @@
 use super::resource_manager::ResourceManager;
 use std::cell::RefCell;
 use std::rc::Rc;
+use std::ptr::null;
 
 pub enum GameState {
     GAME_ACTIVE,
@@ -26,7 +27,12 @@ impl Game {
             resource_manager: resource_manager.clone()
         }
     }
-    pub fn init(&mut self) { }
+    pub fn init(&mut self) {
+        let shader = self.resource_manager.borrow_mut().load_shader("shaders/sprite.vs", "shaders/sprite.frag", "sprite");
+        shader.borrow_mut().useShader();
+        shader.borrow_mut().setInt(0)
+
+    }
     pub fn processInput(&mut self, dt : f32) {}
     pub fn update(&mut self, dt: f32) {}
     pub fn render(&mut self) {}

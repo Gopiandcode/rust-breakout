@@ -8,6 +8,9 @@ use std::fs::File;
 use std::io::Read;
 use std::mem::swap;
 
+use std::rc::Rc;
+use std::cell::RefCell;
+
 use std::ffi::CString;
 use std::os::raw::{c_char, c_int, c_uchar, c_void};
 use std::ptr::null_mut;
@@ -20,8 +23,8 @@ use super::texture::Texture;
 include!(concat!(env!("OUT_DIR"), "/SOIL_bindings.rs"));
 
 pub struct ResourceManager {
-    shaders: HashMap<String, Shader>,
-    textures: HashMap<String, Texture>,
+    shaders: HashMap<String, Rc<RefCell<Shader>>>,
+    textures: HashMap<String, Rc<RefCell<Texture>>>,
 }
 
 
@@ -35,22 +38,22 @@ impl ResourceManager {
     }
 
 
-    pub fn load_shader(&mut self, vertex_file: &str, fragment_file: &str, name: &str) -> &Shader {
-        self.shaders.insert(name.to_string(), ResourceManager::load_shader_from_file(vertex_file, fragment_file));
-        return &self.shaders[name];
+    pub fn load_shader(&mut self, vertex_file: &str, fragment_file: &str, name: &str) -> Rc<RefCell<Shader>> {
+        self.shaders.insert(name.to_string(), Rc::new(RefCell::new(ResourceManager::load_shader_from_file(vertex_file, fragment_file))));
+        self.shaders[name].clone()
     }
 
-    pub fn get_shader(&mut self, name: &str) -> &Shader {
-        return &self.shaders[name];
+    pub fn get_shader(&mut self, name: &str) -> Rc<RefCell<Shader>> {
+        self.shaders[name].clone()
     }
 
-    pub fn load_texture(&mut self, vertex_file: &str, is_alpha: bool, name: &str) -> &Texture {
-        self.textures.insert(name.to_string(),  ResourceManager::load_texture_from_file(vertex_file, is_alpha));
-        &self.textures[name]
+    pub fn load_texture(&mut self, vertex_file: &str, is_alpha: bool, name: &str) -> Rc<RefCell<Texture>> {
+        self.textures.insert(name.to_string(),  Rc::new(RefCell::new(ResourceManager::load_texture_from_file(vertex_file, is_alpha))));
+        self.textures[name].clone()
     }
 
-    pub fn get_texture(&self, name: &str) -> &Texture {
-        &self.textures[name]
+    pub fn get_texture(&self, name: &str) -> Rc<RefCell<Texture>> {
+        self.textures[name].clone()
     }
 
     pub fn clear(&mut self) {
@@ -60,7 +63,7 @@ impl ResourceManager {
 
             for (_, mut shader) in new_shaders.iter_mut() {
                 unsafe {
-                    shader.delete();
+                    shader.borrow_mut().delete();
                 }
             }
         }
@@ -71,14 +74,14 @@ impl ResourceManager {
 
             for (_, mut texture) in new_textures.iter_mut() {
                 unsafe {
-                    texture.delete();
+                    texture.borrow_mut().delete();
                 }
             }
         }
     }
 
 
-    pub fn load_shader_from_file(vertex_file: &str, fragment_file: &str) -> Shader {
+    fn load_shader_from_file(vertex_file: &str, fragment_file: &str) -> Shader {
         let mut vertex_string = String::new();
         let mut fragment_string = String::new();
 
@@ -101,7 +104,7 @@ impl ResourceManager {
         shader
     }
 
-    pub fn load_texture_from_file(file: &str, alpha: bool) -> Texture {
+    fn load_texture_from_file(file: &str, alpha: bool) -> Texture {
         let mut texture = Texture::new();
 
         let mut file = CString::new(file).expect("| ERROR::RESOURCE_MANAGER: Invalid file string for texture.");

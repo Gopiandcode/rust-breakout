@@ -1,6 +1,9 @@
 extern crate gl;
-use sdl2::event::Event;
+extern crate nalgebra;
 use std::ptr;
+
+use nalgebra::base::{Matrix3, Matrix4, Vector2, Vector3};
+use sdl2::event::Event;
 use gl::types::{GLuint, GLint, GLfloat, GLboolean, GLchar, GLsizei};
 
 pub struct Shader {
@@ -98,28 +101,28 @@ impl Shader {
         gl::Uniform1i(gl::GetUniformLocation(self.id, name.as_ptr()), value);
     }
 
-    pub unsafe fn setVector2f(&mut self, name : &[GLchar], value : &[GLfloat; 2]) {
+    pub unsafe fn setVector2f(&mut self, name : &[GLchar], value : &Vector2<GLfloat>) {
         if self.use_shader {
             self.useShader();
         }
 
-        gl::Uniform2fv(gl::GetUniformLocation(self.id, name.as_ptr()), 1, value.as_ptr());
+        gl::Uniform2fv(gl::GetUniformLocation(self.id, name.as_ptr()), 1, value.as_slice().as_ptr());
     }
 
-    pub unsafe fn setVector3f(&mut self, name : &[GLchar], value : &[GLfloat; 3]) {
+    pub unsafe fn setVector3f(&mut self, name : &[GLchar], value : &Vector3<GLfloat>) {
         if self.use_shader {
             self.useShader();
         }
 
-        gl::Uniform3fv(gl::GetUniformLocation(self.id, name.as_ptr()), 1, value.as_ptr());
+        gl::Uniform3fv(gl::GetUniformLocation(self.id, name.as_ptr()), 1, value.as_slice().as_ptr());
     }
 
-    pub unsafe fn setMatrix4(&mut self, name : &[GLchar], value : &[GLfloat; 16]) {
+    pub unsafe fn setMatrix4(&mut self, name : &[GLchar], value : &Matrix4<GLfloat>) {
         if self.use_shader {
             self.useShader();
         }
 
-        gl::UniformMatrix4fv(gl::GetUniformLocation(self.id, name.as_ptr()), 1, gl::FALSE, value.as_ptr());
+        gl::UniformMatrix4fv(gl::GetUniformLocation(self.id, name.as_ptr()), 1, gl::FALSE, value.as_slice().as_ptr());
     }
 
 

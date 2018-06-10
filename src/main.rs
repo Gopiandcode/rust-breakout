@@ -1,11 +1,13 @@
 extern crate sdl2;
 extern crate gl;
+extern crate nalgebra;
 
 pub mod game;
 pub mod timer;
 pub mod texture;
 pub mod shader;
 pub mod resource_manager;
+pub mod sprite_renderer;
 
 use game::Game;
 use timer::Timer;
@@ -15,11 +17,19 @@ use std::cell::RefCell;
 use std::rc::Rc;
 
 use sdl2::event::Event;
+use nalgebra::base::Matrix4;
 
 
 
 fn main() {
-
+    Matrix4::new_orthographic(
+        0.0,    // left
+        800.0,  // right
+        0.0,    // top
+        600.0,  // bottom
+        -1.0,   // znear
+        1.0     // zfar
+    );
     // configure SDL2
     let sdl = sdl2::init().unwrap();
     let video_subsystem = sdl.video().expect("| ERROR:INITIALIZATION: Could not initialize SDL video subsystem.");
