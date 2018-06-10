@@ -1,0 +1,16 @@
+[package]
+name = "gui-base"
+version = "0.1.0"
+authors = ["Kiran Gopinathan <zcabkgo@ucl.ac.uk>"]
+links = "SOIL"
+build = "build.rs"
+
+[build-dependencies]
+bindgen = "0.26.3"
+
+[dependencies]
+sdl2 = "0.31.0"
+gl = "0.10.0"
+nalgebra = "0.15.3"
+
+

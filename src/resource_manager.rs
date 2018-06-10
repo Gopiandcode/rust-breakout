@@ -26,6 +26,15 @@ pub struct ResourceManager {
 
 
 impl ResourceManager {
+
+    pub fn new() -> Self {
+        ResourceManager {
+            shaders: HashMap::new(),
+            textures: HashMap::new()
+        }
+    }
+
+
     pub fn load_shader(&mut self, vertex_file: &str, fragment_file: &str, name: &str) -> &Shader {
         self.shaders.insert(name.to_string(), ResourceManager::load_shader_from_file(vertex_file, fragment_file));
         return &self.shaders[name];
