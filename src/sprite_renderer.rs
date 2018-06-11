@@ -99,13 +99,10 @@ impl SpriteRenderer {
 
         let mut model = model.matrix();
 
-        let matrix_text = string_to_glchar(CString::new("model").unwrap().to_bytes());
-        let color_text = string_to_glchar(CString::new("spriteColor").unwrap().to_bytes());
-
         unsafe {
             // load the position matrix and color vector into the shader
-            self.shader.borrow_mut().setMatrix4(&matrix_text, &model);
-            self.shader.borrow_mut().setVector3f(&color_text, &color);
+            self.shader.borrow_mut().setMatrix4("model", &model);
+            self.shader.borrow_mut().setVector3f("spriteColor", &color);
 
             // this function will be using texture_0 entry for storing textures
             gl::ActiveTexture(gl::TEXTURE0);

@@ -14,7 +14,7 @@ INCDIR = src
 OBJDIR = obj
 
 CXX = gcc -fPIC
-CXXFLAGS = -O2 -s -Wall 
+CXXFLAGS = -O2 -s -Wall -lGL -lGLU -lopengl32
 DELETER = rm -f
 COPIER = cp
 

@@ -4,6 +4,7 @@ version = "0.1.0"
 authors = ["Kiran Gopinathan <zcabkgo@ucl.ac.uk>"]
 links = "SOIL"
 build = "build.rs"
+linker = "cc -lGL"
 
 [build-dependencies]
 bindgen = "0.26.3"

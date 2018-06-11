@@ -3,12 +3,18 @@ extern crate bindgen;
 use std::env;
 use std::path::PathBuf;
 
+#[link(name="GL")]
+extern {
+
+}
+
 fn main() {
     let out_dir = env::var("OUT_DIR").unwrap();
 
     println!("{}", &out_dir);
     println!("cargo:rustc-link-search=native=lib/SOIL");
     println!("cargo:rustc-link-lib=static=SOIL");
+    println!("cargo:rustc-link-lib=GL");
 
 
     let bindings = bindgen::Builder::default()
