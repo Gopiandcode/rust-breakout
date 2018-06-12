@@ -4,7 +4,7 @@ use gl::types::{GLchar, GLint, GLuint};
 
 use std::collections::hash_map::HashMap;
 
-use std::ffi::{CString, CStr};
+use std::ffi::{CStr, CString};
 use std::fmt;
 use std::fs::File;
 use std::io::Read;
@@ -81,12 +81,6 @@ impl ResourceManager {
         {
             let mut new_shaders = HashMap::new();
             swap(&mut new_shaders, &mut self.shaders);
-
-            for (_, mut shader) in new_shaders.iter_mut() {
-                unsafe {
-                    shader.borrow_mut().delete();
-                }
-            }
         }
 
         {
@@ -101,38 +95,27 @@ impl ResourceManager {
         }
     }
 
-    fn load_shader_from_file(vertex_file: &str, fragment_file: &str) -> Shader {
-        println!("Loading shader {},  {}", vertex_file, fragment_file);
+    fn load_shader_from_file(vertex_file: &str, fragment_file: &str) -> Result<Shader, String> {
         let mut vertex_string = String::new();
         let mut fragment_string = String::new();
 
         {
-            let mut vertex = File::open(vertex_file)
-                .expect("| ERROR::RESOURCE_MANAGER: Vertex shader not found");
-            let mut fragment = File::open(fragment_file)
-                .expect("| ERROR::RESOURCE_MANAGER: Fragment shader not found");
-            vertex.read_to_string(&mut vertex_string);
-            fragment.read_to_string(&mut fragment_string);
+            let mut vertex = try!(File::open(vertex_file).map_err(|e| e.to_string()));
+            let mut fragment = try!(File::open(fragment_file).map_err(|e| e.to_string()));
+            vertex
+                .read_to_string(&mut vertex_string)
+                .map_err(|e| e.to_string())?;
+            fragment
+                .read_to_string(&mut fragment_string)
+                .map_err(|e| e.to_string())?;
         }
-        println!("THIS IS THE EXTRACTED CONTENT:\n===================VERTEX=======================");
-        println!("{}", vertex_string);
-        println!("====================FRAGMENT====================");
-        println!("{}", fragment_string);
-        println!("================================================");
 
+        let mut vertex_source =
+            CString::new(vertex_string.into_bytes()).map_err(|e| e.to_string())?;
+        let mut fragment_source =
+            CString::new(fragment_string.into_bytes()).map_err(|e| e.to_string())?;
 
-        let mut vertex_source = CString::new(vertex_string.into_bytes()).unwrap(); //string_to_glchar(vertex_string.as_bytes());
-        let mut fragment_source = CString::new(fragment_string.into_bytes()).unwrap(); //string_to_glchar(fragment_string.as_bytes());
-
-        let mut shader = Shader::new();
-
-        println!("compiling the shader");
-        unsafe {
-            shader.compile(&vertex_source, &fragment_source);
-        }
-        println!("compiled the shader");
-
-        shader
+        Shader::new(&vertex_source, &fragment_source)
     }
 
     fn load_texture_from_file(path: &str, alpha: bool) -> Texture {

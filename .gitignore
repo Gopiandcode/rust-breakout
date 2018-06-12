@@ -1,2 +1,8 @@
 /target
 **/*.rs.bk
+lib/SOIL/src/*
+lib/SOIL/libSOIL.a
+lib/SOIL/SOIL.h
+lib/SOIL/obj/*
+*.log
+Cargo.lock

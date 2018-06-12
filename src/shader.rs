@@ -1,136 +1,138 @@
 extern crate gl;
 extern crate nalgebra;
 
-use std::collections::HashMap;
-use std::ffi::{CString,CStr};
+use super::string_utils::{allocate_cstring_buffer, str_to_glchar};
+
+use std::ffi::CStr;
 use std::ptr;
 use std::ptr::null;
 
-use nalgebra::base::{Matrix3, Matrix4, Vector2, Vector3};
-use sdl2::event::Event;
-use gl::types::{GLuint, GLint, GLfloat, GLboolean, GLchar, GLsizei};
-
-
-static mut glchar_cache: Option<HashMap<String, Vec<GLchar>>> = None;
-
-
-fn str_to_glchar(string: &str) -> *const GLchar {
-
-    unsafe {
-        if let Some(ref mut map) = glchar_cache {
-            if let Some(ref converted) = map.get(string) {
-                return converted.as_ptr();
-            }
-
-            let name: Vec<GLchar> = string_to_glchar(CString::new(string).unwrap().to_bytes());
-
-            map.insert(string.to_string(), name);
-
-            if let Some(ref converted) = map.get(string) {
-                converted.as_ptr()
-            } else {
-                str_to_glchar(string)
-            }
-        } else {
-            glchar_cache = Some(HashMap::new());
-            str_to_glchar(string)
-        }
-    }
-}
+use gl::types::{GLfloat, GLint, GLsizei, GLuint};
+use nalgebra::base::{Matrix4, Vector2, Vector3};
 
 pub struct Shader {
     id: GLuint,
     use_shader: bool,
 }
 
-pub fn glchar_to_string(bytes: &[GLchar]) -> String {
-    let mut vector: Vec<u8> = Vec::new();
+fn check_program_compile_errors(object: GLuint) -> Option<String> {
+    let mut success: GLint = 1;
+    gl::GetProgramiv(object, gl::LINK_STATUS, &mut success);
 
-    for &i in bytes.iter() {
-        vector.push(i as u8);
+    if success == 0 {
+        let mut len = 0;
+        gl::GetProgramiv(object, gl::INFO_LOG_LENGTH, &mut len);
+
+        let mut error = allocate_cstring_buffer(len as usize);
+
+        gl::GetProgramInfoLog(
+            object,
+            len,
+            ptr::null_mut(),
+            error.as_ptr() as *mut gl::types::GLchar,
+        );
+
+        Some(error.to_string_lossy().into_owned())
+    } else {
+        None
     }
-
-    String::from_utf8(vector).unwrap()
 }
 
-pub fn string_to_glchar(bytes: &[u8]) -> Vec<GLchar> {
+fn check_shader_compile_errors(object: GLuint) -> Option<String> {
+    let mut success: GLint = 1;
 
-    let mut vector: Vec<GLchar> = Vec::new();
+    gl::GetShaderiv(object, gl::COMPILE_STATUS, &mut success);
+    if success == 0 {
+        let mut len = 0;
+        gl::GetShaderiv(object, gl::INFO_LOG_LENGTH, &mut len);
 
-    for &i in bytes.iter() {
-        vector.push(i as GLchar);
+        let mut error = allocate_cstring_buffer(len as usize);
+
+        gl::GetShaderInfoLog(
+            object,
+            len,
+            ptr::null_mut(),
+            error.as_ptr() as *mut gl::types::GLchar,
+        );
+
+        Some(error.to_string_lossy().into_owned())
+    } else {
+        None
     }
+}
 
-    vector
+fn compile_shader(source: &CStr, shader_type: GLuint) -> Result<GLuint, String> {
+    unsafe {
+        let id = gl::CreateShader(shader_type);
+        gl::ShaderSource(id, 1, &source.as_ptr(), null());
+        gl::CompileShader(id);
+        if let Some(err) = check_shader_compile_errors(id) {
+            Err(err)
+        } else {
+            Ok(id)
+        }
+    }
+}
+
+fn compile_program(vertex_id: GLuint, fragment_id: GLuint) -> Result<GLuint, String> {
+    unsafe {
+        let id = gl::CreateProgram();
+        gl::AttachShader(id, vertex_id);
+        gl::AttachShader(id, fragment_id);
+
+        gl::LinkProgram(id);
+
+        let result = if let Some(err) = check_program_compile_errors(id) {
+            Err(err)
+        } else {
+            Ok(id)
+        };
+
+        gl::DetachShader(id, vertex_id);
+        gl::DetachShader(id, fragment_id);
+
+        result
+    }
 }
 
 impl Shader {
-    pub fn new() -> Self {
-        Shader {
-            id: 0,
-            use_shader: false,
+    /// Constructs a new Shader Program given a vertex source file, and a fragment source file.
+    ///
+    /// OpenGL compiles the shaders at runtime, so if there are any errors during compilation,
+    /// the result will contain the error string.
+    pub fn new(vertexSource: &CStr, fragmentSource: &CStr) -> Result<Self, String> {
+        let mut id = 0;
+
+        let sVertex = try!(compile_shader(vertexSource, gl::VERTEX_SHADER));
+        let sFragment = try!(compile_shader(fragmentSource, gl::FRAGMENT_SHADER));
+
+        id = try!(compile_program(sVertex, sFragment));
+
+        // cleanup
+        unsafe {
+            gl::DeleteShader(sVertex);
+            gl::DeleteShader(sFragment);
         }
+
+        Ok(Shader {
+            id: id,
+            use_shader: false,
+        })
     }
 
-    pub fn setUseShader(&mut self, useShader: bool) {
+    pub fn set_use_Shader(&mut self, useShader: bool) {
         self.use_shader = useShader;
     }
 
-    pub fn setActive(&self) {
+    pub fn enable(&self) {
         unsafe {
             gl::UseProgram(self.id);
         }
     }
 
-    pub unsafe fn delete(&mut self) {
-        gl::DeleteProgram(self.id);
-        self.id = 0;
-        self.use_shader = false;
-    }
-
-    pub unsafe fn useShader(&self) {
-        gl::UseProgram(self.id);
-    }
-
-    pub unsafe fn compile(&mut self,
-                          vertexSource: &CStr,
-                          fragmentSource: &CStr) {
-
-        let sVertex = gl::CreateShader(gl::VERTEX_SHADER);
-        gl::ShaderSource(sVertex, 1, &vertexSource.as_ptr(), null());
-        gl::CompileShader(sVertex);
-
-        println!("Checking for vertex shader compiling errors");
-        self.checkCompileErrors(sVertex, "VERTEX");
-        println!("Finished checking for vertex shader errors");
-
-        let sFragment = gl::CreateShader(gl::FRAGMENT_SHADER);
-        gl::ShaderSource(sFragment, 1, &fragmentSource.as_ptr(), null());
-        gl::CompileShader(sFragment);
-
-        println!("Checking for fragment shader compiling errors");
-        self.checkCompileErrors(sFragment, "FRAGMENT");
-        println!("Finished checking for fragment shader errors");
-
-
-        self.id = gl::CreateProgram();
-        gl::AttachShader(self.id, sVertex);
-        gl::AttachShader(self.id, sFragment);
-
-        gl::LinkProgram(self.id);
-        let id = self.id;
-        self.checkCompileErrors(id, "PROGRAM");
-
-        gl::DetachShader(self.id, sVertex);
-        gl::DetachShader(self.id, sFragment);
-
-        gl::DeleteShader(sVertex);
-        gl::DeleteShader(sFragment);
-    }
-
     pub unsafe fn setFloat(&mut self, name: &str, value: GLfloat) {
         if self.use_shader {
-            self.useShader();
+            self.enable();
         }
 
         let name = str_to_glchar(name);
@@ -140,7 +142,7 @@ impl Shader {
 
     pub unsafe fn setInt(&mut self, name: &str, value: GLint) {
         if self.use_shader {
-            self.useShader();
+            self.enable();
         }
         let name = str_to_glchar(name);
 
@@ -149,78 +151,44 @@ impl Shader {
 
     pub unsafe fn setVector2f(&mut self, name: &str, value: &Vector2<GLfloat>) {
         if self.use_shader {
-            self.useShader();
+            self.enable();
         }
 
         let name = str_to_glchar(name);
 
-        gl::Uniform2fv(gl::GetUniformLocation(self.id, name), 1, value.as_slice().as_ptr());
+        gl::Uniform2fv(
+            gl::GetUniformLocation(self.id, name),
+            1,
+            value.as_slice().as_ptr(),
+        );
     }
 
     pub unsafe fn setVector3f(&mut self, name: &str, value: &Vector3<GLfloat>) {
         if self.use_shader {
-            self.useShader();
+            self.enable();
         }
 
         let name = str_to_glchar(name);
 
-        gl::Uniform3fv(gl::GetUniformLocation(self.id, name), 1, value.as_slice().as_ptr());
+        gl::Uniform3fv(
+            gl::GetUniformLocation(self.id, name),
+            1,
+            value.as_slice().as_ptr(),
+        );
     }
 
     pub unsafe fn setMatrix4(&mut self, name: &str, value: &Matrix4<GLfloat>) {
         if self.use_shader {
-            self.useShader();
+            self.enable();
         }
         let name = str_to_glchar(name);
 
-        gl::UniformMatrix4fv(gl::GetUniformLocation(self.id, name), 1, gl::FALSE, value.as_slice().as_ptr());
-    }
-
-
-    unsafe fn checkCompileErrors(&mut self, object: GLuint, object_t: &str) {
-        let mut success: GLint = 1;
-
-        if (object_t != "PROGRAM") {
-
-            gl::GetShaderiv(object, gl::COMPILE_STATUS, &mut success);
-            if success == 0 {
-                let mut len = 0;
-                gl::GetShaderiv(object, gl::INFO_LOG_LENGTH, &mut len);
-
-                let mut error = allocate_cstring_buffer(len as usize);
-
-
-                gl::GetShaderInfoLog(object, len, ptr::null_mut(), error.as_ptr() as *mut gl::types::GLchar);
-
-
-                let string = error.to_string_lossy().into_owned();
-                println!("| ERROR::SHADER: Link-time error: Type: {} \n{}\n -- ---------------------------------------------------- -- ", object_t, string);
-            }
-        } else {
-            gl::GetProgramiv(object, gl::LINK_STATUS, &mut success);
-
-            if success == 0 {
-                let mut len = 0;
-                gl::GetProgramiv(object, gl::INFO_LOG_LENGTH, &mut len);
-
-                let mut error = allocate_cstring_buffer(len as usize);
-
-
-                gl::GetProgramInfoLog(object, len, ptr::null_mut(), error.as_ptr() as *mut gl::types::GLchar);
-
-
-                let string = error.to_string_lossy().into_owned();
-                println!("| ERROR::SHADER: Link-time error: Type: {} \n{}\n -- ---------------------------------------------------- -- ", object_t, string);
-            }
-        }
-    }
-}
-
-fn allocate_cstring_buffer(len: usize) -> CString {
-    let mut buffer: Vec<u8> = Vec::with_capacity(len + 1);
-    buffer.extend([b' '].iter().cycle().take(len));
-    unsafe {
-        CString::from_vec_unchecked(buffer)
+        gl::UniformMatrix4fv(
+            gl::GetUniformLocation(self.id, name),
+            1,
+            gl::FALSE,
+            value.as_slice().as_ptr(),
+        );
     }
 }
 
