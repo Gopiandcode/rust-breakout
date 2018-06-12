@@ -1,13 +1,15 @@
 extern crate gl;
 extern crate nalgebra;
 
-use std::ffi::CString;
+use std::collections::HashMap;
+use std::ffi::{CString,CStr};
 use std::ptr;
+use std::ptr::null;
 
 use nalgebra::base::{Matrix3, Matrix4, Vector2, Vector3};
 use sdl2::event::Event;
 use gl::types::{GLuint, GLint, GLfloat, GLboolean, GLchar, GLsizei};
-use std::collections::HashMap;
+
 
 static mut glchar_cache: Option<HashMap<String, Vec<GLchar>>> = None;
 
@@ -91,17 +93,24 @@ impl Shader {
     }
 
     pub unsafe fn compile(&mut self,
-                          vertexSource: &[GLchar],
-                          fragmentSource: &[GLchar]) {
+                          vertexSource: &CStr,
+                          fragmentSource: &CStr) {
+
         let sVertex = gl::CreateShader(gl::VERTEX_SHADER);
-        gl::ShaderSource(sVertex, 1 as GLsizei, &(vertexSource.as_ptr()), &1);
+        gl::ShaderSource(sVertex, 1, &vertexSource.as_ptr(), null());
         gl::CompileShader(sVertex);
+
+        println!("Checking for vertex shader compiling errors");
         self.checkCompileErrors(sVertex, "VERTEX");
+        println!("Finished checking for vertex shader errors");
 
         let sFragment = gl::CreateShader(gl::FRAGMENT_SHADER);
-        gl::ShaderSource(sFragment, 1 as GLsizei, &fragmentSource.as_ptr(), &1);
+        gl::ShaderSource(sFragment, 1, &fragmentSource.as_ptr(), null());
         gl::CompileShader(sFragment);
+
+        println!("Checking for fragment shader compiling errors");
         self.checkCompileErrors(sFragment, "FRAGMENT");
+        println!("Finished checking for fragment shader errors");
 
 
         self.id = gl::CreateProgram();
@@ -111,6 +120,9 @@ impl Shader {
         gl::LinkProgram(self.id);
         let id = self.id;
         self.checkCompileErrors(id, "PROGRAM");
+
+        gl::DetachShader(self.id, sVertex);
+        gl::DetachShader(self.id, sFragment);
 
         gl::DeleteShader(sVertex);
         gl::DeleteShader(sFragment);
@@ -166,25 +178,56 @@ impl Shader {
 
 
     unsafe fn checkCompileErrors(&mut self, object: GLuint, object_t: &str) {
-        let mut success: GLint = 0;
-        let mut infoLog: [GLchar; 1024] = [0; 1024];
+        let mut success: GLint = 1;
 
         if (object_t != "PROGRAM") {
+
             gl::GetShaderiv(object, gl::COMPILE_STATUS, &mut success);
-            if success != 0 {
-                gl::GetShaderInfoLog(object, 1024, ptr::null_mut(), infoLog.as_mut_ptr());
-                let string = glchar_to_string(&infoLog);
+            if success == 0 {
+                let mut len = 0;
+                gl::GetShaderiv(object, gl::INFO_LOG_LENGTH, &mut len);
+
+                let mut error = allocate_cstring_buffer(len as usize);
+
+
+                gl::GetShaderInfoLog(object, len, ptr::null_mut(), error.as_ptr() as *mut gl::types::GLchar);
+
+
+                let string = error.to_string_lossy().into_owned();
+                println!("| ERROR::SHADER: Link-time error: Type: {} \n{}\n -- ---------------------------------------------------- -- ", object_t, string);
             }
         } else {
             gl::GetProgramiv(object, gl::LINK_STATUS, &mut success);
 
-            if success != 0 {
-                let mut length = 0;
-                gl::GetProgramInfoLog(object, 1024, &mut length, infoLog.as_mut_ptr());
-                let string = glchar_to_string(&infoLog[0 .. length as usize]);
+            if success == 0 {
+                let mut len = 0;
+                gl::GetProgramiv(object, gl::INFO_LOG_LENGTH, &mut len);
+
+                let mut error = allocate_cstring_buffer(len as usize);
+
+
+                gl::GetProgramInfoLog(object, len, ptr::null_mut(), error.as_ptr() as *mut gl::types::GLchar);
+
+
+                let string = error.to_string_lossy().into_owned();
                 println!("| ERROR::SHADER: Link-time error: Type: {} \n{}\n -- ---------------------------------------------------- -- ", object_t, string);
             }
         }
     }
 }
 
+fn allocate_cstring_buffer(len: usize) -> CString {
+    let mut buffer: Vec<u8> = Vec::with_capacity(len + 1);
+    buffer.extend([b' '].iter().cycle().take(len));
+    unsafe {
+        CString::from_vec_unchecked(buffer)
+    }
+}
+
+impl Drop for Shader {
+    fn drop(&mut self) {
+        unsafe {
+            gl::DeleteProgram(self.id);
+        }
+    }
+}

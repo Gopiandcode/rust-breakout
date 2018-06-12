@@ -8,7 +8,9 @@ pub mod texture;
 pub mod shader;
 pub mod resource_manager;
 pub mod sprite_renderer;
+pub mod test_game;
 
+use test_game::TestGame;
 use game::Game;
 use timer::Timer;
 use resource_manager::ResourceManager;
@@ -22,19 +24,13 @@ use nalgebra::base::Matrix4;
 
 
 fn main() {
-    Matrix4::new_orthographic(
-        0.0,    // left
-        800.0,  // right
-        0.0,    // top
-        600.0,  // bottom
-        -1.0,   // znear
-        1.0     // zfar
-    );
+
     // configure SDL2
     let sdl = sdl2::init().unwrap();
     let video_subsystem = sdl.video().expect("| ERROR:INITIALIZATION: Could not initialize SDL video subsystem.");
     let gl_attr = video_subsystem.gl_attr();
 
+    gl_attr.set_context_profile(sdl2::video::GLProfile::Core);
     gl_attr.set_context_version(4,5);
 
     let window = video_subsystem
@@ -51,7 +47,7 @@ fn main() {
 
 
     let mut resource_manager = Rc::new(RefCell::new(ResourceManager::new()));
-    let mut game = Game::new(&resource_manager);
+    let mut game = /*TestGame::new(&resource_manager);*/  Game::new(&resource_manager);
     let mut timer = Timer::new();
 
 
@@ -59,9 +55,9 @@ fn main() {
     unsafe {
         gl::Viewport(0,0, 900, 700);
         gl::ClearColor(0.3, 0.3, 0.5, 1.0);
-        gl::Enable(gl::CULL_FACE);
-        gl::Enable(gl::BLEND);
-        gl::BlendFunc(gl::SRC_ALPHA, gl::ONE_MINUS_SRC_ALPHA);
+//        gl::Enable(gl::CULL_FACE);
+//        gl::Enable(gl::BLEND);
+//        gl::BlendFunc(gl::SRC_ALPHA, gl::ONE_MINUS_SRC_ALPHA);
     }
 
     game.init();
@@ -87,7 +83,6 @@ fn main() {
 
 
         unsafe {
-            gl::ClearColor(0.0, 0.0, 0.0, 1.0);
             gl::Clear(gl::COLOR_BUFFER_BIT);
         }
 

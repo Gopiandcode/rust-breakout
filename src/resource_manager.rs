@@ -4,6 +4,7 @@ use gl::types::{GLchar, GLint, GLuint};
 
 use std::collections::hash_map::HashMap;
 
+use std::ffi::{CString, CStr};
 use std::fmt;
 use std::fs::File;
 use std::io::Read;
@@ -13,7 +14,6 @@ use std::slice::from_raw_parts;
 use std::cell::RefCell;
 use std::rc::Rc;
 
-use std::ffi::CString;
 use std::os::raw::{c_char, c_int, c_uchar, c_void};
 use std::ptr::null_mut;
 
@@ -53,7 +53,7 @@ impl ResourceManager {
         self.shaders[name].clone()
     }
 
-    pub fn get_shader(&mut self, name: &str) -> Rc<RefCell<Shader>> {
+    pub fn get_shader(&self, name: &str) -> Rc<RefCell<Shader>> {
         self.shaders[name].clone()
     }
 
@@ -102,6 +102,7 @@ impl ResourceManager {
     }
 
     fn load_shader_from_file(vertex_file: &str, fragment_file: &str) -> Shader {
+        println!("Loading shader {},  {}", vertex_file, fragment_file);
         let mut vertex_string = String::new();
         let mut fragment_string = String::new();
 
@@ -113,15 +114,23 @@ impl ResourceManager {
             vertex.read_to_string(&mut vertex_string);
             fragment.read_to_string(&mut fragment_string);
         }
+        println!("THIS IS THE EXTRACTED CONTENT:\n===================VERTEX=======================");
+        println!("{}", vertex_string);
+        println!("====================FRAGMENT====================");
+        println!("{}", fragment_string);
+        println!("================================================");
 
-        let mut vertex_source: Vec<GLchar> = string_to_glchar(vertex_string.as_bytes());
-        let mut fragment_source = string_to_glchar(fragment_string.as_bytes());
+
+        let mut vertex_source = CString::new(vertex_string.into_bytes()).unwrap(); //string_to_glchar(vertex_string.as_bytes());
+        let mut fragment_source = CString::new(fragment_string.into_bytes()).unwrap(); //string_to_glchar(fragment_string.as_bytes());
 
         let mut shader = Shader::new();
 
+        println!("compiling the shader");
         unsafe {
             shader.compile(&vertex_source, &fragment_source);
         }
+        println!("compiled the shader");
 
         shader
     }
