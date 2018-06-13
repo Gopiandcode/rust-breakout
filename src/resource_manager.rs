@@ -17,7 +17,7 @@ use std::rc::Rc;
 use std::os::raw::{c_char, c_int, c_uchar, c_void};
 use std::ptr::null_mut;
 
-use super::shader::{glchar_to_string, string_to_glchar, Shader};
+use super::shader::{Shader};
 use super::texture::Texture;
 
 #[allow(non_camel_case_types)]
@@ -42,19 +42,17 @@ impl ResourceManager {
         vertex_file: &str,
         fragment_file: &str,
         name: &str,
-    ) -> Rc<RefCell<Shader>> {
+    ) -> Result<Rc<RefCell<Shader>>,String> {
+        let shader = ResourceManager::load_shader_from_file( vertex_file, fragment_file )?;
         self.shaders.insert(
             name.to_string(),
-            Rc::new(RefCell::new(ResourceManager::load_shader_from_file(
-                vertex_file,
-                fragment_file,
-            ))),
+            Rc::new(RefCell::new(shader))
         );
-        self.shaders[name].clone()
+        Ok(self.shaders[name].clone())
     }
 
-    pub fn get_shader(&self, name: &str) -> Rc<RefCell<Shader>> {
-        self.shaders[name].clone()
+    pub fn get_shader(&self, name: &str) -> Option<Rc<RefCell<Shader>>> {
+        self.shaders.get(name).map(|shdr| shdr.clone())
     }
 
     pub fn load_texture(
@@ -62,36 +60,26 @@ impl ResourceManager {
         vertex_file: &str,
         is_alpha: bool,
         name: &str,
-    ) -> Rc<RefCell<Texture>> {
+    ) -> Result<Rc<RefCell<Texture>>,String> {
+        let texture = ResourceManager::load_texture_from_file( vertex_file, is_alpha)?;
         self.textures.insert(
             name.to_string(),
-            Rc::new(RefCell::new(ResourceManager::load_texture_from_file(
-                vertex_file,
-                is_alpha,
-            ))),
+            Rc::new(RefCell::new(texture)),
         );
-        self.textures[name].clone()
+        Ok(self.textures[name].clone())
     }
 
-    pub fn get_texture(&self, name: &str) -> Rc<RefCell<Texture>> {
-        self.textures[name].clone()
+    pub fn get_texture(&self, name: &str) -> Option<Rc<RefCell<Texture>>> {
+        self.textures.get(name).map(|shdr| shdr.clone())
     }
 
     pub fn clear(&mut self) {
         {
             let mut new_shaders = HashMap::new();
-            swap(&mut new_shaders, &mut self.shaders);
-        }
-
-        {
             let mut new_textures = HashMap::new();
-            swap(&mut new_textures, &mut self.textures);
 
-            for (_, mut texture) in new_textures.iter_mut() {
-                unsafe {
-                    texture.borrow_mut().delete();
-                }
-            }
+            swap(&mut new_shaders, &mut self.shaders);
+            swap(&mut new_textures, &mut self.textures);
         }
     }
 
@@ -118,21 +106,15 @@ impl ResourceManager {
         Shader::new(&vertex_source, &fragment_source)
     }
 
-    fn load_texture_from_file(path: &str, alpha: bool) -> Texture {
-        let mut texture = Texture::new();
+    fn load_texture_from_file(path: &str, alpha: bool) -> Result<Texture,String> {
 
         let mut file = CString::new(path)
             .expect("| ERROR::RESOURCE_MANAGER: Invalid file string for texture.");
         let mut file = file.as_ptr();
         let mut width: c_int = 0;
         let mut height: c_int = 0;
-        let mut force_channels = if texture.is_alpha() {
-            SOIL_LOAD_AUTO
-        } else {
-            SOIL_LOAD_AUTO
-        };
+        let mut force_channels = SOIL_LOAD_AUTO;
 
-        texture.set_alpha(alpha);
 
         unsafe {
             let mut channels = 0;
@@ -144,16 +126,10 @@ impl ResourceManager {
                 force_channels as i32,
             );
             if image.is_null() {
-                println!(
-                    "{}",
-                    format!(
-                        "| ERROR::TEXTURE: Was unable to load image at location {}",
-                        path
-                    )
-                );
+                return Err( format!( "Unable to load image at location {}", path));
             }
 
-            texture.generate(width as u32, height as u32, image as *const c_void);
+            let mut texture = Texture::new(width as GLuint, height as GLuint, image as *const c_void).build();
 
             SOIL_free_image_data(image);
 

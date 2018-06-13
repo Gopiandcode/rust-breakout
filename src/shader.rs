@@ -15,7 +15,7 @@ pub struct Shader {
     use_shader: bool,
 }
 
-fn check_program_compile_errors(object: GLuint) -> Option<String> {
+unsafe fn check_program_compile_errors(object: GLuint) -> Option<String> {
     let mut success: GLint = 1;
     gl::GetProgramiv(object, gl::LINK_STATUS, &mut success);
 
@@ -38,7 +38,7 @@ fn check_program_compile_errors(object: GLuint) -> Option<String> {
     }
 }
 
-fn check_shader_compile_errors(object: GLuint) -> Option<String> {
+unsafe fn check_shader_compile_errors(object: GLuint) -> Option<String> {
     let mut success: GLint = 1;
 
     gl::GetShaderiv(object, gl::COMPILE_STATUS, &mut success);

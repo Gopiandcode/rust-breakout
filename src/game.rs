@@ -43,13 +43,7 @@ impl Game {
             "./shaders/sprite.vs",
             "./shaders/sprite.frag",
             "sprite",
-        );
-
-        self.resource_manager.borrow_mut().load_shader(
-           "./shaders/triangle.vs",
-           "./shaders/triangle.frag",
-            "triangle"
-        );
+        ).expect("sprite shader could not be loaded");
 
         let projection = Matrix4::new_orthographic(
             0.0,                    // left
@@ -95,7 +89,7 @@ impl Game {
         unsafe {
             {
             let mut _shader = shader.borrow_mut();
-            _shader.useShader();
+            _shader.enable();
             _shader.setInt("image", 0);
             _shader.setMatrix4("projection", &projection);
             }
@@ -112,8 +106,8 @@ impl Game {
         unsafe {
             if let Some(ref mut screen) = RENDERER {
                 let texture: Rc<RefCell<Texture>> =
-                    self.resource_manager.borrow().get_texture("face");
-                screen.draw_sprite(
+                    self.resource_manager.borrow().get_texture("face").unwrap();
+                screen.draw_sprite_transformed(
                     &texture.borrow(),
                     &Vector2::new(200.0, 200.0),
                     &Vector2::new(300.0, 400.0),

@@ -126,23 +126,28 @@ impl Texture {
             gl::GenTextures(1, &mut id);
         }
 
-        gl::BindTexture(gl::TEXTURE_2D, id);
-        gl::TexImage2D(
-            gl::TEXTURE_2D,
-            0,
-            internal_format as GLint,
-            width as GLint,
-            height as GLint,
-            0,
-            image_format,
-            gl::UNSIGNED_BYTE,
-            data,
-        );
-        gl::TexParameteri(gl::TEXTURE_2D, gl::TEXTURE_WRAP_S, wrap_S as GLint);
-        gl::TexParameteri(gl::TEXTURE_2D, gl::TEXTURE_WRAP_T, wrap_T as GLint);
-        gl::TexParameteri(gl::TEXTURE_2D, gl::TEXTURE_MIN_FILTER, filter_min as GLint);
-        gl::TexParameteri(gl::TEXTURE_2D, gl::TEXTURE_MAG_FILTER, filter_max as GLint);
-        gl::BindTexture(gl::TEXTURE_2D, 0);
+        unsafe {
+
+            gl::BindTexture(gl::TEXTURE_2D, id);
+            gl::TexImage2D(
+                gl::TEXTURE_2D,
+                0,
+                internal_format as GLint,
+                width as GLint,
+                height as GLint,
+                0,
+                image_format,
+                gl::UNSIGNED_BYTE,
+                data,
+            );
+            gl::TexParameteri(gl::TEXTURE_2D, gl::TEXTURE_WRAP_S, wrap_S as GLint);
+            gl::TexParameteri(gl::TEXTURE_2D, gl::TEXTURE_WRAP_T, wrap_T as GLint);
+            gl::TexParameteri(gl::TEXTURE_2D, gl::TEXTURE_MIN_FILTER, filter_min as GLint);
+            gl::TexParameteri(gl::TEXTURE_2D, gl::TEXTURE_MAG_FILTER, filter_max as GLint);
+            gl::BindTexture(gl::TEXTURE_2D, 0);
+
+        }
+
 
         Ok(Texture {
             id: id,
@@ -161,10 +166,12 @@ impl Texture {
         gl::BindTexture(gl::TEXTURE_2D, self.id);
     }
 
-    pub unsafe fn delete(&mut self) {
-        gl::DeleteTextures(1, &self.id);
-        self.id = 0;
-        self.width = 0;
-        self.height = 0;
+}
+
+impl Drop for Texture {
+    fn drop(&mut self) {
+        unsafe {
+            gl::DeleteTextures(1, &self.id);
+        }
     }
 }

@@ -27,12 +27,12 @@ impl TestGame {
            "./shaders/triangle.vs",
            "./shaders/triangle.frag",
             "triangle"
-        );
+        ).expect("Could not load triangle shader");
 
         unsafe {
             {
             let mut _shader = shader.borrow_mut();
-            _shader.useShader();
+            _shader.enable();
             }
         }
 
@@ -84,13 +84,11 @@ impl TestGame {
      pub fn processInput(&mut self, dt: f32) {}
     pub fn update(&mut self, dt: f32) {}
     pub fn render(&mut self) {
-        let mut shader = self.resource_manager.borrow().get_shader("triangle");
-
+        if let Some(mut shader) = self.resource_manager.borrow().get_shader("triangle") {
         unsafe {
             let mut _shader = shader.borrow_mut();
-            _shader.useShader();
+            _shader.enable();
         }
-
        unsafe {
            gl::BindVertexArray(self.vao);
            gl::DrawArrays(
@@ -99,6 +97,10 @@ impl TestGame {
                3
            );
        }
+
+
+
+        }
 
     }
 
