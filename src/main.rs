@@ -46,7 +46,7 @@ fn main() {
     let mut event_pump = sdl.event_pump().unwrap();
 
     let mut resource_manager = Rc::new(RefCell::new(ResourceManager::new()));
-    let mut game = /*TestGame::new(&resource_manager);*/  Game::new(&resource_manager);
+    let mut game = /* TestGame::new(&resource_manager);*/  Game::new(&resource_manager); 
     let mut timer = Timer::new();
 
     // configure OpenGL

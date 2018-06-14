@@ -11,7 +11,7 @@ use std::os::raw::c_void;
 use std::ptr::null;
 use std::rc::Rc;
 
-use nalgebra::base::{Matrix4, Unit, Vector2, Vector3};
+use nalgebra::base::{Matrix4, Unit, Vector2, Vector3, Vector4};
 use nalgebra::geometry::{Affine3, Rotation3, Similarity3, Transform3, Translation3};
 
 use gl::types::{GLfloat, GLint, GLsizeiptr, GLuint};
@@ -38,13 +38,14 @@ pub struct SpriteRenderer {
 impl SpriteRenderer {
     pub fn new(shader: Rc<RefCell<Shader>>) -> Self {
         let mut vertices: Vec<GLfloat> = vec![
-            // pos          // tex
-            0.0, 1.0, 0.0, 1.0, 
-            1.0, 0.0, 1.0, 0.0, 
-            0.0, 0.0, 0.0, 0.0, 
-            0.0, 1.0, 0.0, 1.0, 
-            1.0, 1.0, 1.0, 1.0, 
-            1.0, 0.0, 1.0, 0.0, ]; 
+                0.0, 1.0, 0.0, 1.0, 
+                0.0, 0.0, 0.0, 0.0, 
+                1.0, 0.0, 1.0, 0.0, 
+                1.0, 0.0, 1.0, 0.0,
+                1.0, 1.0, 1.0, 1.0, 
+                0.0, 1.0, 0.0, 1.0, 
+            ];
+
 
         SpriteRenderer::new_with_custom_quad(shader, &vertices)
     }
@@ -57,6 +58,7 @@ impl SpriteRenderer {
             gl::GenVertexArrays(1, &mut vao);
             gl::GenBuffers(1, &mut vbo);
         }
+        println!("Generated VAO {}", vao);
 
         // load over data onto GPU
         unsafe {
@@ -88,7 +90,7 @@ impl SpriteRenderer {
             rotation: 0.0,
             color: Vector3::new(1.0, 1.0, 1.0),
             shader: shader.clone(),
-            quadVAO: 0,
+            quadVAO: vao,
         }
     }
 
@@ -128,7 +130,7 @@ impl SpriteRenderer {
 
         let position_vector = Translation3::from_vector(Vector3::new(position.x, position.y, 0.0));
         let center_prime = Translation3::from_vector(Vector3::new(0.5 * size.x, 0.5 * size.y, 0.0));
-        let rotation = Rotation3::from_axis_angle(&Vector3::z_axis(), rotate);
+        let rotation = Rotation3::from_axis_angle(&Vector3::z_axis(), -rotate);
         let center = Translation3::from_vector(Vector3::new(-0.5 * size.x, -0.5 * size.y, 0.0));
         let scaling_matrix = Transform3::from_matrix_unchecked(Matrix4::new_nonuniform_scaling(
             &Vector3::new(size.x, size.y, 1.0),
@@ -145,7 +147,9 @@ impl SpriteRenderer {
             // scale quad to correct size 
                 scaling_matrix;
 
+
         let mut model = model.matrix();
+
 
         unsafe {
             // load the position matrix and color vector into the shader

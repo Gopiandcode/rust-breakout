@@ -120,8 +120,8 @@ impl Shader {
         })
     }
 
-    pub fn set_use_Shader(&mut self, useShader: bool) {
-        self.use_shader = useShader;
+    pub fn set_use_shader(&mut self, use_shader: bool) {
+        self.use_shader = use_shader;
     }
 
     pub fn enable(&self) {

@@ -33,15 +33,15 @@ impl Game {
         Game {
             state: GameState::GAME_ACTIVE,
             keys: [true; 1024],
-            width: 1024,
-            height: 640,
+            width: 700,
+            height: 900,
             resource_manager: resource_manager.clone(),
         }
     }
     pub fn init(&mut self) {
         let shader = self.resource_manager.borrow_mut().load_shader(
-            "./shaders/sprite.vs",
-            "./shaders/sprite.frag",
+            "/home/gopiandcode/Documents/Rust/gui-base/shaders/sprite.vs",
+            "/home/gopiandcode/Documents/Rust/gui-base/shaders/sprite.frag",
             "sprite",
         ).expect("sprite shader could not be loaded");
 
@@ -52,45 +52,14 @@ impl Game {
             self.height as GLfloat, // top
             -1.0,                   // znear
             1.0,                    // zfar
-        );/*{
-            let l = 0.0;
-            let r = self.width as GLfloat;
-            let b = self.height as GLfloat;
-            let t = 0.0;
-            let n = -1.0;
-            let f = 1.0;
+        );
 
-            let n2 = 2.0 * n;
-            let r_l = r-l;
-            let rpl = r+l;
-            let f_n = f-n;
-            let fpn = f+n;
-            let t_b = t-b;
-            let tpb = t + b;
-
-            Matrix4::new(
-//                n2/r_l, 0.0, 0.0, 0.0,
-//                0.0, n2/t_b, 0.0, 0.0,
-//                rpl/r_l, tpb/t_b, -fpn/f_n, -1.0,
-//                0.0,  0.0, -2.0*(f*n)/f_n,  0.0,
-                n2/r_l,   0.0,  rpl/r_l, 0.0,
-                0.0,   n2/t_b,  tpb/t_b, 0.0,
-                0.0,      0.0, -fpn/f_n, -2.0*(f*n)/f_n,
-                0.0,      0.0,     -1.0, 0.0,
-            )
-        };*/
-
-        println!("Perspective_matrix: {:?}", projection);
-        // [0.001953125,      0.0,     0.0,    0.0,
-        //  0.0,         0.003125,     0.0,    0.0,
-        //  0.0,              0.0,    -1.0,    0.0,
-        // -1.0,             -1.0,    -0.0,    1.0]
 
         unsafe {
             {
             let mut _shader = shader.borrow_mut();
             _shader.enable();
-            _shader.setInt("image", 0);
+            // _shader.setInt("image", 0);
             _shader.setMatrix4("projection", &projection);
             }
             RENDERER = Some(SpriteRenderer::new(shader));
@@ -98,7 +67,7 @@ impl Game {
 
         self.resource_manager
             .borrow_mut()
-            .load_texture("textures/awesomeface.png", true, "face");
+            .load_texture("/home/gopiandcode/Documents/Rust/gui-base/textures/awesomeface.png", true, "face");
     }
     pub fn processInput(&mut self, dt: f32) {}
     pub fn update(&mut self, dt: f32) {}
