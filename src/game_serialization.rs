@@ -86,6 +86,8 @@ pub fn read_from_reader<R : BufRead>(reader : &mut R) -> Result<(Vec<u32>, (GLui
                 .collect::<Vec<u32>>();
 
             if count.len() != width as usize {
+                println!("Line is {}", line);
+                println!("Incorrect as {} /= {}", count.len(), width);
                 return Err(format!("Invalid file format - at line {}", i))
             }
 

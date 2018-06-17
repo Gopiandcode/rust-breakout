@@ -54,14 +54,16 @@ impl Game {
         ).expect("sprite shader could not be loaded");
         {
             let mut manager = self.resource_manager.borrow_mut();
-            manager.load_texture("textures/background.jpg", false, "background")
-                .expect("could not find textures/background.jpg");
-            manager.load_texture("textures/block.png", false, "block")
-            .expect("could not find textures/background.jpg");
-            manager.load_texture("textures/block_solid.png", false, "block_solid")
-            .expect("could not find textures/background.jpg");
-            manager.load_texture("/home/gopiandcode/Documents/Rust/gui-base/textures/awesomeface.png", true, "face")
-                .expect("could not find textures/awesomeface.png");
+            for (filename, is_alpha, reference) in &[
+                ("textures/background.jpg", false, "background"),
+                ("textures/block.png", false, "block"),
+                ("textures/block_solid.png", false,  "block_solid"),
+                ("/home/gopiandcode/Documents/Rust/gui-base/textures/awesomeface.png", true, "face"),
+            ] {
+
+                manager.load_texture(filename, *is_alpha, reference)
+                    .expect(&format!("Could not find file {}", filename));
+            }
         }
 
         let width = self.width;
@@ -72,7 +74,7 @@ impl Game {
 
             self.levels.push(level);
         }
-        self.current_level = Some(1);
+        self.current_level = Some(0);
         self.renderer = Some(SpriteRenderer::new(&shader));
 
 
@@ -127,15 +129,5 @@ impl Game {
            _ => return
         }
 
-
-//                let texture: Rc<RefCell<Texture>> =
-//                    self.resource_manager.borrow().get_texture("face").unwrap();
-//                screen.draw_sprite_transformed(
-//                    &texture.borrow(),
-//                    &Vector2::new(200.0, 200.0),
-//                    &Vector2::new(300.0, 400.0),
-//                    45.0,
-//                    &Vector3::new(0.0, 1.0, 0.0),
-//                );
     }
 }
