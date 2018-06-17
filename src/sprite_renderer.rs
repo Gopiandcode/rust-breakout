@@ -36,7 +36,7 @@ pub struct SpriteRenderer {
 }
 
 impl SpriteRenderer {
-    pub fn new(shader: Rc<RefCell<Shader>>) -> Self {
+    pub fn new(shader: &Rc<RefCell<Shader>>) -> Self {
         let mut vertices: Vec<GLfloat> = vec![
                 0.0, 1.0, 0.0, 1.0, 
                 0.0, 0.0, 0.0, 0.0, 
@@ -47,7 +47,7 @@ impl SpriteRenderer {
             ];
 
 
-        SpriteRenderer::new_with_custom_quad(shader, &vertices)
+        SpriteRenderer::new_with_custom_quad(shader.clone(), &vertices)
     }
     pub fn new_with_custom_quad(shader: Rc<RefCell<Shader>>, quad: &[GLfloat]) -> Self {
         let mut vbo: GLuint = 0;

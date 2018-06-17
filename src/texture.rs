@@ -83,7 +83,7 @@ impl TextureBuilder {
         self
     }
 
-    pub fn build(&self) -> Result<Texture, String> {
+    pub fn build(self) -> Result<Texture, String> {
         let internal_format = self.internal_format.unwrap_or(gl::RGB);
         let image_format = self.image_format.unwrap_or(gl::RGB);
         let wrap_S = self.wrap_S.unwrap_or(gl::REPEAT);

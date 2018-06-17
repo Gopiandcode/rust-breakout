@@ -129,9 +129,10 @@ impl ResourceManager {
                 return Err( format!( "Unable to load image at location {}", path));
             }
 
-            let mut texture = Texture::new(width as GLuint, height as GLuint, image as *const c_void)
-            .with_alpha(channels == 4)
-            .build();
+            let mut texture = Texture::new(width as GLuint, height as GLuint, image as *const c_void);
+            texture.with_alpha(channels == 4);
+
+            let mut texture = texture.build();
 
             SOIL_free_image_data(image);
 

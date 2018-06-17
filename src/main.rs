@@ -3,6 +3,8 @@ extern crate nalgebra;
 extern crate sdl2;
 
 pub mod game;
+pub mod game_object;
+pub mod game_level;
 pub mod resource_manager;
 pub mod shader;
 pub mod sprite_renderer;
@@ -10,6 +12,8 @@ pub mod string_utils;
 pub mod test_game;
 pub mod texture;
 pub mod timer;
+pub mod game_serialization;
+
 
 use game::Game;
 use resource_manager::ResourceManager;
