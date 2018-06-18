@@ -1,10 +1,12 @@
 extern crate gl;
 extern crate nalgebra;
+extern crate sdl2;
 
 use super::resource_manager::ResourceManager;
 use super::sprite_renderer::SpriteRenderer;
 use super::texture::Texture;
 use super::game_level::GameLevel;
+use super::player::Player;
 
 use std::cell::RefCell;
 use std::ptr::null;
@@ -12,6 +14,8 @@ use std::rc::Rc;
 
 use gl::types::GLfloat;
 use nalgebra::base::{Matrix4, Vector2, Vector3};
+use sdl2::event::Event;
+
 
 #[derive(Clone)]
 pub enum GameState {
@@ -22,13 +26,13 @@ pub enum GameState {
 
 pub struct Game {
     state: GameState,
-    keys: [bool; 1024],
     width: u32,
     height: u32,
     resource_manager: Rc<RefCell<ResourceManager>>,
     levels: Vec<GameLevel>,
     current_level: Option<usize>,
-    renderer: Option<SpriteRenderer>
+    renderer: Option<SpriteRenderer>,
+    player: Option<Player>
 }
 
 static mut RENDERER: Option<SpriteRenderer> = None;
@@ -37,13 +41,13 @@ impl Game {
     pub fn new(resource_manager: &Rc<RefCell<ResourceManager>>) -> Self {
         Game {
             state: GameState::GAME_ACTIVE,
-            keys: [true; 1024],
             width: 700,
             height: 900,
             resource_manager: resource_manager.clone(),
             levels: Vec::new(),
             current_level: None,
-            renderer: None
+            renderer: None,
+            player: None
         }
     }
     pub fn init(&mut self) { // Loading resources
@@ -53,12 +57,14 @@ impl Game {
             "sprite",
         ).expect("sprite shader could not be loaded");
         {
+
             let mut manager = self.resource_manager.borrow_mut();
             for (filename, is_alpha, reference) in &[
                 ("textures/background.jpg", false, "background"),
                 ("textures/block.png", false, "block"),
                 ("textures/block_solid.png", false,  "block_solid"),
                 ("/home/gopiandcode/Documents/Rust/gui-base/textures/awesomeface.png", true, "face"),
+                ("textures/paddle.png", true, "paddle")
             ] {
 
                 manager.load_texture(filename, *is_alpha, reference)
@@ -76,6 +82,12 @@ impl Game {
         }
         self.current_level = Some(0);
         self.renderer = Some(SpriteRenderer::new(&shader));
+
+        {
+            let _resource_manager = self.resource_manager.borrow();
+            let texture = _resource_manager.get_texture("paddle").expect("Could not load paddle texture");
+            self.player = Some(Player::new(&Vector2::new(self.width as f32, self.height as f32),&texture));
+        }
 
 
         let projection = Matrix4::new_orthographic(
@@ -99,8 +111,20 @@ impl Game {
 
 
     }
-    pub fn processInput(&mut self, dt: f32) {}
-    pub fn update(&mut self, dt: f32) {}
+    pub fn processInput(&mut self, dt: f32, events : &Vec<Event>) {
+        for event in events.iter() {
+            println!("Event {:?}", event);
+            match event {
+                Event::KeyDown {..} => {
+
+                },
+                _ => continue
+            }
+        }
+    }
+    pub fn update(&mut self, dt: f32) {
+
+    }
     pub fn render(&mut self) {
         let mut screen : &mut SpriteRenderer = self.renderer.as_mut().expect("Game error - render called before init");
         let state = self.state.clone();

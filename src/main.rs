@@ -13,6 +13,7 @@ pub mod test_game;
 pub mod texture;
 pub mod timer;
 pub mod game_serialization;
+pub mod player;
 
 
 use game::Game;
@@ -71,13 +72,18 @@ fn main() {
         let current_frame = timer.get_time();
         delta_time = current_frame - last_frame;
         last_frame = current_frame;
+        let mut event_iterator = event_pump .poll_iter();
 
-        for event in event_pump.poll_iter() {
-            match event {
-                Event::Quit { .. } => break 'main,
-                e => game.processInput(delta_time),
-            }
+        let events : Vec<_> = event_iterator.collect();
+
+        if events
+            .iter()
+            .any(|event| if let Event::Quit { .. } = event { true } else { false }) {
+            break 'main;
         }
+
+
+        game.processInput(delta_time, &events);
 
         game.update(delta_time);
 
