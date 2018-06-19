@@ -14,6 +14,7 @@ pub mod texture;
 pub mod timer;
 pub mod game_serialization;
 pub mod player;
+pub mod input_manager;
 
 
 use game::Game;

@@ -7,6 +7,7 @@ use super::sprite_renderer::SpriteRenderer;
 use super::texture::Texture;
 use super::game_level::GameLevel;
 use super::player::Player;
+use super::input_manager::{Input, parse_input};
 
 use std::cell::RefCell;
 use std::ptr::null;
@@ -32,7 +33,7 @@ pub struct Game {
     levels: Vec<GameLevel>,
     current_level: Option<usize>,
     renderer: Option<SpriteRenderer>,
-    player: Option<Player>
+    player: Option<Player>,
 }
 
 static mut RENDERER: Option<SpriteRenderer> = None;
@@ -47,7 +48,7 @@ impl Game {
             levels: Vec::new(),
             current_level: None,
             renderer: None,
-            player: None
+            player: None,
         }
     }
     pub fn init(&mut self) { // Loading resources
@@ -57,16 +58,14 @@ impl Game {
             "sprite",
         ).expect("sprite shader could not be loaded");
         {
-
             let mut manager = self.resource_manager.borrow_mut();
             for (filename, is_alpha, reference) in &[
                 ("textures/background.jpg", false, "background"),
                 ("textures/block.png", false, "block"),
-                ("textures/block_solid.png", false,  "block_solid"),
+                ("textures/block_solid.png", false, "block_solid"),
                 ("/home/gopiandcode/Documents/Rust/gui-base/textures/awesomeface.png", true, "face"),
                 ("textures/paddle.png", true, "paddle")
             ] {
-
                 manager.load_texture(filename, *is_alpha, reference)
                     .expect(&format!("Could not find file {}", filename));
             }
@@ -86,7 +85,7 @@ impl Game {
         {
             let _resource_manager = self.resource_manager.borrow();
             let texture = _resource_manager.get_texture("paddle").expect("Could not load paddle texture");
-            self.player = Some(Player::new(&Vector2::new(self.width as f32, self.height as f32),&texture));
+            self.player = Some(Player::new(&Vector2::new((self.width as f32/2.0), (self.height as f32 * 0.3)), &texture));
         }
 
 
@@ -102,56 +101,75 @@ impl Game {
 
         unsafe {
             {
-            let mut _shader = shader.borrow_mut();
-            _shader.enable();
-            _shader.setInt("image", 0);
-            _shader.setMatrix4("projection", &projection);
+                let mut _shader = shader.borrow_mut();
+                _shader.enable();
+                _shader.setInt("image", 0);
+                _shader.setMatrix4("projection", &projection);
             }
         }
-
-
     }
-    pub fn processInput(&mut self, dt: f32, events : &Vec<Event>) {
-        for event in events.iter() {
-            println!("Event {:?}", event);
-            match event {
-                Event::KeyDown {..} => {
+    pub fn processInput(&mut self, dt: f32, events: &Vec<Event>) {
+        let mut player : &mut Player = self.player.as_mut().expect("Game error -render called before player initialized");
+        match &self.state {
+            ref GAME_ACTIVE => {
+                for event in events { println!("{:?}", event)}
 
-                },
-                _ => continue
-            }
+               for input in parse_input(events) {
+                   match input {
+                       Input::LEFT => {
+                            // pass input to player
+                       }
+                       Input::RIGHT => {
+
+                           // pass input to player
+                       }
+                       Input::DOWN => {
+
+                           // pass input to player
+                       }
+                       Input::UP => {
+
+                           // pass input to player
+                       }
+
+                   }
+               }
+           }
+            _ => return
         }
     }
     pub fn update(&mut self, dt: f32) {
 
+        let mut player : &mut Player = self.player.as_mut().expect("Game error -render called before player initialized");
+        // update player state.
     }
     pub fn render(&mut self) {
-        let mut screen : &mut SpriteRenderer = self.renderer.as_mut().expect("Game error - render called before init");
+        let mut screen: &mut SpriteRenderer = self.renderer.as_mut().expect("Game error - render called before init");
+        let mut player : &mut Player = self.player.as_mut().expect("Game error -render called before player initialized");
         let state = self.state.clone();
 
         match state {
-         GAME_ACTIVE => {
-             let texture: Rc<RefCell<Texture>> =
+            GAME_ACTIVE => {
+                let texture: Rc<RefCell<Texture>> =
                     self.resource_manager.borrow().get_texture("background")
                         .expect("Game error - could not load background image");
 
-             let height = self.height;
-             let width = self.width;
-             let index = self.current_level.expect("Game error - No Current Level");
-             let mut level =  &mut self.levels[index];
-             screen.draw_sprite_transformed(
-                 &texture.borrow(),
-                 &Vector2::new(0.0, 0.0),
-                 &Vector2::new(width as f32, height as f32),
-                 0.0,
-                 &Vector3::new(1.0, 1.0, 1.0),
+                let height = self.height;
+                let width = self.width;
+                let index = self.current_level.expect("Game error - No Current Level");
+                let mut level = &mut self.levels[index];
+                screen.draw_sprite_transformed(
+                    &texture.borrow(),
+                    &Vector2::new(0.0, 0.0),
+                    &Vector2::new(width as f32, height as f32),
+                    0.0,
+                    &Vector3::new(1.0, 1.0, 1.0),
                 );
 
-             level.draw(&mut screen);
-
-         },
-           _ => return
+                level.draw(&mut screen);
+                player.as_mut().draw(&mut screen);
+            }
+            _ => return
         }
-
     }
 }
