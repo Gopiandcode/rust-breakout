@@ -14,13 +14,16 @@ use std::rc::Rc;
 
 use gl::types::GLfloat;
 use nalgebra::base::{Matrix4, Vector2, Vector3};
-use sdl2::event::Event;
+use sdl2::event::{Event};
+use sdl2::keyboard::Keycode;
 
+#[derive(Debug)]
 pub enum Input {
    UP,
     DOWN,
     LEFT,
-    RIGHT
+    RIGHT,
+    ACTION0
 }
 
 pub fn parse_input(elements: &Vec<Event>) -> Vec<Input> {
@@ -29,11 +32,17 @@ pub fn parse_input(elements: &Vec<Event>) -> Vec<Input> {
             keycode: Some(ref keycode),
             ..
         } = elem {
+            println!("keycode: {:?}", keycode);
            match keycode {
-               A => Some(Input::LEFT),
-               D => Some(Input::RIGHT),
-               S => Some(Input::DOWN),
-               W => Some(Input::UP),
+               Keycode::D => Some(Input::RIGHT),
+               Keycode::A => Some(Input::LEFT),
+               Keycode::S => Some(Input::DOWN),
+               Keycode::W => Some(Input::UP),
+               Keycode::Right => Some(Input::RIGHT),
+               Keycode::Left => Some(Input::LEFT),
+               Keycode::Up   => Some(Input::UP),
+               Keycode::Down => Some(Input::DOWN),
+               Keycode::J => Some(Input::ACTION0),
                _ => None
            }
         } else {None}).collect()

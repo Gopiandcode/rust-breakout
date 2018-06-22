@@ -85,7 +85,7 @@ impl Game {
         {
             let _resource_manager = self.resource_manager.borrow();
             let texture = _resource_manager.get_texture("paddle").expect("Could not load paddle texture");
-            self.player = Some(Player::new(&Vector2::new((self.width as f32/2.0), (self.height as f32 * 0.3)), &texture));
+            self.player = Some(Player::new(&Vector2::new((self.width as f32/2.0), 10.0), (width as f32, height as f32), &texture));
         }
 
 
@@ -115,13 +115,17 @@ impl Game {
                 for event in events { println!("{:?}", event)}
 
                for input in parse_input(events) {
+                   println!("Parsed: {:?}", input);
+
                    match input {
                        Input::LEFT => {
                             // pass input to player
+                            player.move_left(dt);
                        }
                        Input::RIGHT => {
 
                            // pass input to player
+                            player.move_right(dt);
                        }
                        Input::DOWN => {
 
@@ -131,6 +135,7 @@ impl Game {
 
                            // pass input to player
                        }
+                       _ => ()
 
                    }
                }
