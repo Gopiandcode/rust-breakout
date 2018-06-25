@@ -73,12 +73,14 @@ impl Game {
 
         let width = self.width;
         let height = self.height;
+
         for file_name in &["levels/one.lvl", "levels/two.lvl", "levels/three.lvl", "levels/four.lvl"] {
             let mut level = GameLevel::from_file(&self.resource_manager, file_name, width, height)
                 .expect(&format!("Could not open file {}", file_name));
 
             self.levels.push(level);
         }
+
         self.current_level = Some(0);
         self.renderer = Some(SpriteRenderer::new(&shader));
 
@@ -108,6 +110,8 @@ impl Game {
             }
         }
     }
+
+
     pub fn processInput(&mut self, dt: f32, events: &Vec<Event>) {
         let mut player : &mut Player = self.player.as_mut().expect("Game error -render called before player initialized");
         match &self.state {
@@ -143,11 +147,14 @@ impl Game {
             _ => return
         }
     }
+
     pub fn update(&mut self, dt: f32) {
 
         let mut player : &mut Player = self.player.as_mut().expect("Game error -render called before player initialized");
         // update player state.
     }
+
+
     pub fn render(&mut self) {
         let mut screen: &mut SpriteRenderer = self.renderer.as_mut().expect("Game error - render called before init");
         let mut player : &mut Player = self.player.as_mut().expect("Game error -render called before player initialized");
@@ -177,4 +184,5 @@ impl Game {
             _ => return
         }
     }
+
 }

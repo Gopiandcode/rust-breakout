@@ -2,25 +2,14 @@ extern crate gl;
 extern crate nalgebra;
 extern crate sdl2;
 
-pub mod game;
-pub mod game_object;
-pub mod game_level;
-pub mod resource_manager;
-pub mod shader;
-pub mod sprite_renderer;
-pub mod string_utils;
-pub mod test_game;
-pub mod texture;
-pub mod timer;
-pub mod game_serialization;
-pub mod player;
-pub mod input_manager;
+pub mod objects;
+pub mod systems;
+pub mod utilities;
 
-
-use game::Game;
-use resource_manager::ResourceManager;
-use test_game::TestGame;
-use timer::Timer;
+use super::game::Game;
+use systems::resource_manager::ResourceManager;
+use super::test_game::TestGame;
+use utilities::timer::Timer;
 
 use std::cell::RefCell;
 use std::rc::Rc;

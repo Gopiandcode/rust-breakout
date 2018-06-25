@@ -17,8 +17,8 @@ use std::rc::Rc;
 use std::os::raw::{c_char, c_int, c_uchar, c_void};
 use std::ptr::null_mut;
 
-use super::shader::{Shader};
-use super::texture::Texture;
+use utilities::shader::{Shader};
+use utilities::texture::Texture;
 
 #[allow(non_camel_case_types)]
 #[allow(dead_code)]

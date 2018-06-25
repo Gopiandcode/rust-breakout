@@ -1,9 +1,9 @@
 extern crate gl;
 extern crate nalgebra;
 
-use super::game_object::{GameObject, GameObjectBuilder};
-use super::texture::Texture;
-use super::shader::Shader;
+use objects::game_object::{GameObject, GameObjectBuilder};
+use utilities::texture::Texture;
+use utilities::shader::Shader;
 
 use std::convert::{AsRef,AsMut};
 use std::rc::Rc;

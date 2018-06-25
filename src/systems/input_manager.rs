@@ -2,11 +2,11 @@ extern crate gl;
 extern crate nalgebra;
 extern crate sdl2;
 
-use super::resource_manager::ResourceManager;
-use super::sprite_renderer::SpriteRenderer;
-use super::texture::Texture;
-use super::game_level::GameLevel;
-use super::player::Player;
+use systems::resource_manager::ResourceManager;
+use utilities::sprite_renderer::SpriteRenderer;
+use utilities::texture::Texture;
+use utilities::game_level::GameLevel;
+use objects::player::Player;
 
 use std::cell::RefCell;
 use std::ptr::null;

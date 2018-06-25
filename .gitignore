@@ -1,5 +1,9 @@
 /target
 **/*.rs.bk
+**/*.swo
+**/*.swp
+**/*.swn
+**/*.swp
 lib/SOIL/src/*
 lib/SOIL/libSOIL.a
 lib/SOIL/SOIL.h
