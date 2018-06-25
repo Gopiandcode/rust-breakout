@@ -1,6 +1,3 @@
-extern crate gl;
-extern crate nalgebra;
-
 use objects::game_object::{GameObject, GameObjectBuilder};
 use utilities::texture::Texture;
 use utilities::shader::Shader;

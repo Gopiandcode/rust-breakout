@@ -2,13 +2,13 @@ extern crate gl;
 extern crate nalgebra;
 extern crate sdl2;
 
-pub mod objects;
-pub mod systems;
-pub mod utilities;
+mod objects;
+mod systems;
+mod utilities;
+mod game;
 
-use super::game::Game;
+use game::Game;
 use systems::resource_manager::ResourceManager;
-use super::test_game::TestGame;
 use utilities::timer::Timer;
 
 use std::cell::RefCell;

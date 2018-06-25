@@ -1,9 +1,9 @@
 extern crate gl;
 extern crate nalgebra;
 
-use sprite_renderer::SpriteRenderer;
+use utilities::sprite_renderer::SpriteRenderer;
 use objects::game_object::{GameObject,GameObjectBuilder};
-use resource_manager::ResourceManager;
+use systems::resource_manager::ResourceManager;
 
 use std::cmp;
 use std::cell::RefCell;

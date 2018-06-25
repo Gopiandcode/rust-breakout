@@ -1,5 +1,3 @@
-extern crate gl;
-extern crate nalgebra;
 
 use utilities::sprite_renderer::SpriteRenderer;
 use utilities::texture::Texture;

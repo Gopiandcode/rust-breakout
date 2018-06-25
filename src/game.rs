@@ -1,13 +1,10 @@
-extern crate gl;
-extern crate nalgebra;
-extern crate sdl2;
 
-use super::resource_manager::ResourceManager;
-use super::sprite_renderer::SpriteRenderer;
-use super::texture::Texture;
-use super::game_level::GameLevel;
-use super::player::Player;
-use super::input_manager::{Input, parse_input};
+use systems::resource_manager::ResourceManager;
+use utilities::sprite_renderer::SpriteRenderer;
+use utilities::texture::Texture;
+use utilities::game_level::GameLevel;
+use objects::player::Player;
+use systems::input_manager::{Input, parse_input};
 
 use std::cell::RefCell;
 use std::ptr::null;

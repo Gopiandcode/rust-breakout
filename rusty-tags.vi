@@ -3535,6 +3535,7 @@ fullscreen_desktop	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9e
 fullscreen_state	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/sdl2-0.31.0/src/sdl2/video.rs	/^    pub fn fullscreen_state(&self) -> FullscreenType {$/;"	f
 func_name	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/bindgen-0.26.3/src/ir/item.rs	/^    fn func_name(&self) -> Option<&str> {$/;"	f
 function	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/bindgen-0.26.3/src/ir/mod.rs	/^pub mod function;$/;"	m
+game	/home/gopiandcode/Documents/Rust/gui-base/src/main.rs	/^mod game;$/;"	m
 game_controller	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/sdl2-0.31.0/src/sdl2/sdl.rs	/^    pub fn game_controller(&self) -> Result<GameControllerSubsystem, String> { GameControllerSubsystem::new(self) }$/;"	f
 game_level	/home/gopiandcode/Documents/Rust/gui-base/src/utilities/mod.rs	/^pub mod game_level;$/;"	m
 game_object	/home/gopiandcode/Documents/Rust/gui-base/src/objects/mod.rs	/^pub mod game_object;$/;"	m
@@ -4755,7 +4756,7 @@ num_video_displays	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9e
 objc	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/bindgen-0.26.3/src/ir/mod.rs	/^pub mod objc;$/;"	m
 objc_extern_crate	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/bindgen-0.26.3/src/lib.rs	/^    pub fn objc_extern_crate(mut self, doit: bool) -> Self {$/;"	f
 objc_method_codegen	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/bindgen-0.26.3/src/codegen/mod.rs	/^fn objc_method_codegen(ctx: &BindgenContext,$/;"	f
-objects	/home/gopiandcode/Documents/Rust/gui-base/src/main.rs	/^pub mod objects;$/;"	m
+objects	/home/gopiandcode/Documents/Rust/gui-base/src/main.rs	/^mod objects;$/;"	m
 off_diagonal	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/nalgebra-0.15.3/src/linalg/bidiagonal.rs	/^    pub fn off_diagonal(&self) -> &VectorN<N, DimDiff<DimMinimum<R, C>, U1>> {$/;"	f
 off_diagonal	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/nalgebra-0.15.3/src/linalg/symmetric_tridiagonal.rs	/^    pub fn off_diagonal(&self) -> &VectorN<N, DimDiff<D, U1>>$/;"	f
 offset	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/bindgen-0.26.3/src/ir/comp.rs	/^    fn offset(&self) -> Option<usize> {$/;"	f
@@ -5627,7 +5628,7 @@ symmetric_eigenvalues	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299d
 symmetric_tridiagonal	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/nalgebra-0.15.3/src/linalg/mod.rs	/^mod symmetric_tridiagonal;$/;"	m
 symmetric_tridiagonalize	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/nalgebra-0.15.3/src/linalg/symmetric_tridiagonal.rs	/^    pub fn symmetric_tridiagonalize(self) -> SymmetricTridiagonal<N, D> {$/;"	f
 system_ram	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/sdl2-0.31.0/src/sdl2/cpuinfo.rs	/^pub fn system_ram() -> i32 {$/;"	f
-systems	/home/gopiandcode/Documents/Rust/gui-base/src/main.rs	/^pub mod systems;$/;"	m
+systems	/home/gopiandcode/Documents/Rust/gui-base/src/main.rs	/^mod systems;$/;"	m
 take_this_id_usage_set	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/bindgen-0.26.3/src/ir/named.rs	/^    fn take_this_id_usage_set(&mut self, this_id: ItemId) -> ItemSet {$/;"	f
 takes_by_trait_object	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/bindgen-0.26.3/src/ir/traversal.rs	/^        fn takes_by_trait_object(_: &TraversalPredicate) {}$/;"	f
 tan	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/alga-0.6.0/src/general/real.rs	/^            fn tan(self) -> Self {$/;"	f
@@ -5990,7 +5991,7 @@ uses	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/bindgen-0
 uses_any_template_parameters	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/bindgen-0.26.3/src/ir/context.rs	/^    pub fn uses_any_template_parameters(&self, item: ItemId) -> bool {$/;"	f
 uses_template_parameter	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/bindgen-0.26.3/src/ir/context.rs	/^    pub fn uses_template_parameter(&self,$/;"	f
 usr	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/bindgen-0.26.3/src/clang.rs	/^    pub fn usr(&self) -> Option<String> {$/;"	f
-utilities	/home/gopiandcode/Documents/Rust/gui-base/src/main.rs	/^pub mod utilities;$/;"	m
+utilities	/home/gopiandcode/Documents/Rust/gui-base/src/main.rs	/^mod utilities;$/;"	m
 utils	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/bindgen-0.26.3/src/codegen/mod.rs	/^mod utils {$/;"	m
 uv_internal	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/nalgebra-0.15.3/src/linalg/bidiagonal.rs	/^    pub fn uv_internal(&self) -> &MatrixMN<N, R, C> {$/;"	f
 v_t	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/nalgebra-0.15.3/src/linalg/bidiagonal.rs	/^    pub fn v_t(&self) -> MatrixMN<N, DimMinimum<R, C>, C>$/;"	f
