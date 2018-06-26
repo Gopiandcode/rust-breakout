@@ -147,6 +147,7 @@ AreMultipliable	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec82
 AreMultipliable for ShapeConstraint	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/nalgebra-0.15.3/src/base/constraint.rs	/^impl<R1: Dim, C1: Dim, R2: Dim, C2: Dim> AreMultipliable<R1, C1, R2, C2> for ShapeConstraint$/;"	i
 AsMut	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/nalgebra-0.15.3/src/base/conversion.rs	/^        impl<N, S> AsMut<mint::$VT<N>> for Matrix<N, $NRows, U1, S>$/;"	i
 AsMut	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/nalgebra-0.15.3/src/geometry/point_conversion.rs	/^        impl<N> AsMut<mint::$PT<N>> for Point<N, $NRows>$/;"	i
+AsMut for BallObject	/home/gopiandcode/Documents/Rust/gui-base/src/objects/ball.rs	/^impl AsMut<GameObject> for BallObject {$/;"	i
 AsMut for Matrix	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/nalgebra-0.15.3/src/base/conversion.rs	/^        impl<N, S> AsMut<[N; $SZ]> for Matrix<N, $NRows, $NCols, S>$/;"	i
 AsMut for Matrix	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/nalgebra-0.15.3/src/base/conversion.rs	/^        impl<N: Scalar, S> AsMut<[[N; $SZRows]; $SZCols]> for Matrix<N, $NRows, $NCols, S>$/;"	i
 AsMut for Player	/home/gopiandcode/Documents/Rust/gui-base/src/objects/player.rs	/^impl AsMut<GameObject> for Player {$/;"	i
@@ -155,6 +156,7 @@ AsMut for Rect	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823
 AsMut for Surface	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/sdl2-0.31.0/src/sdl2/surface.rs	/^impl<'a> AsMut<SurfaceRef> for Surface<'a> {$/;"	i
 AsRef	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/nalgebra-0.15.3/src/base/conversion.rs	/^        impl<N, S> AsRef<mint::$VT<N>> for Matrix<N, $NRows, U1, S>$/;"	i
 AsRef	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/nalgebra-0.15.3/src/geometry/point_conversion.rs	/^        impl<N> AsRef<mint::$PT<N>> for Point<N, $NRows>$/;"	i
+AsRef for BallObject	/home/gopiandcode/Documents/Rust/gui-base/src/objects/ball.rs	/^impl AsRef<GameObject> for BallObject {$/;"	i
 AsRef for Item	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/bindgen-0.26.3/src/ir/item.rs	/^impl AsRef<ItemId> for Item {$/;"	i
 AsRef for Matrix	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/nalgebra-0.15.3/src/base/conversion.rs	/^        impl<N, S> AsRef<[N; $SZ]> for Matrix<N, $NRows, $NCols, S>$/;"	i
 AsRef for Matrix	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/nalgebra-0.15.3/src/base/conversion.rs	/^        impl<N: Scalar, S> AsRef<[[N; $SZRows]; $SZCols]> for Matrix<N, $NRows, $NCols, S>$/;"	i
@@ -200,6 +202,7 @@ AudioStatus	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/sd
 AudioSubsystem	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/sdl2-0.31.0/src/sdl2/audio.rs	/^impl AudioSubsystem {$/;"	i
 Axis	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/sdl2-0.31.0/src/sdl2/controller.rs	/^impl Axis {$/;"	i
 Axis	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/sdl2-0.31.0/src/sdl2/controller.rs	/^pub enum Axis {$/;"	g
+BallObject	/home/gopiandcode/Documents/Rust/gui-base/src/objects/ball.rs	/^impl BallObject {$/;"	i
 BallObject	/home/gopiandcode/Documents/Rust/gui-base/src/objects/ball.rs	/^pub struct BallObject {$/;"	s
 Base	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/bindgen-0.26.3/src/ir/comp.rs	/^impl Base {$/;"	i
 Base	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/bindgen-0.26.3/src/ir/comp.rs	/^pub struct Base {$/;"	s
@@ -2300,6 +2303,7 @@ as_mut	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/nalgebr
 as_mut	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/sdl2-0.31.0/src/sdl2/rect.rs	/^    fn as_mut(&mut self) -> &mut sys::SDL_Point {$/;"	f
 as_mut	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/sdl2-0.31.0/src/sdl2/rect.rs	/^    fn as_mut(&mut self) -> &mut sys::SDL_Rect {$/;"	f
 as_mut	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/sdl2-0.31.0/src/sdl2/surface.rs	/^    fn as_mut(&mut self) -> &mut SurfaceRef {$/;"	f
+as_mut	/home/gopiandcode/Documents/Rust/gui-base/src/objects/ball.rs	/^    fn as_mut(&mut self) -> &mut GameObject {$/;"	f
 as_mut	/home/gopiandcode/Documents/Rust/gui-base/src/objects/player.rs	/^    fn as_mut(&mut self) -> &mut GameObject {$/;"	f
 as_mut_ptr	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/bindgen-0.26.3/src/codegen/mod.rs	/^                pub unsafe fn as_mut_ptr(&mut self) -> *mut T {$/;"	f
 as_mut_slice	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/bindgen-0.26.3/src/codegen/mod.rs	/^                pub unsafe fn as_mut_slice(&mut self, len: usize) -> &mut [T] {$/;"	f
@@ -2320,6 +2324,7 @@ as_ref	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/nalgebr
 as_ref	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/sdl2-0.31.0/src/sdl2/rect.rs	/^    fn as_ref(&self) -> &sys::SDL_Point {$/;"	f
 as_ref	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/sdl2-0.31.0/src/sdl2/rect.rs	/^    fn as_ref(&self) -> &sys::SDL_Rect {$/;"	f
 as_ref	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/sdl2-0.31.0/src/sdl2/surface.rs	/^    fn as_ref(&self) -> &SurfaceRef {$/;"	f
+as_ref	/home/gopiandcode/Documents/Rust/gui-base/src/objects/ball.rs	/^    fn as_ref(&self) -> &GameObject {$/;"	f
 as_rgba	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/sdl2-0.31.0/src/sdl2/gfx/primitives.rs	/^    fn as_rgba(&self) -> (u8, u8, u8, u8) {$/;"	f
 as_rgba	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/sdl2-0.31.0/src/sdl2/gfx/primitives.rs	/^    fn as_rgba(&self) -> (u8, u8, u8, u8);$/;"	f
 as_slice	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/bindgen-0.26.3/src/codegen/mod.rs	/^                pub unsafe fn as_slice(&self, len: usize) -> &[T] {$/;"	f
@@ -4641,9 +4646,10 @@ new	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/sdl2-0.31.
 new	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/sdl2-0.31.0/src/sdl2/video.rs	/^    pub fn new(format: PixelFormatEnum, w: i32, h: i32, refresh_rate: i32) -> DisplayMode {$/;"	f
 new	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/sdl2-0.31.0/src/sdl2/video.rs	/^    pub fn new(v: &VideoSubsystem, title: &str, width: u32, height: u32) -> WindowBuilder {$/;"	f
 new	/home/gopiandcode/Documents/Rust/gui-base/src/game.rs	/^    pub fn new(resource_manager: &Rc<RefCell<ResourceManager>>) -> Self {$/;"	f
+new	/home/gopiandcode/Documents/Rust/gui-base/src/objects/ball.rs	/^    pub fn new(position: Vector2<GLfloat>, radius: GLfloat, velocity: Vector2<GLfloat>, sprite: &Rc<RefCell<Texture>>) -> Result<Self, String> {$/;"	f
 new	/home/gopiandcode/Documents/Rust/gui-base/src/objects/game_object.rs	/^    fn new(sprite: &Rc<RefCell<Texture>>) -> Self {$/;"	f
 new	/home/gopiandcode/Documents/Rust/gui-base/src/objects/game_object.rs	/^    pub fn new(sprite: &Rc<RefCell<Texture>>) -> GameObjectBuilder {$/;"	f
-new	/home/gopiandcode/Documents/Rust/gui-base/src/objects/player.rs	/^    pub fn new(position : &Vector2<GLfloat>, (screen_width, screen_height): (GLfloat, GLfloat), sprite: &Rc<RefCell<Texture>>) -> Player {$/;"	f
+new	/home/gopiandcode/Documents/Rust/gui-base/src/objects/player.rs	/^    pub fn new(position : Vector2<GLfloat>, (screen_width, screen_height): (GLfloat, GLfloat), sprite: &Rc<RefCell<Texture>>) -> Player {$/;"	f
 new	/home/gopiandcode/Documents/Rust/gui-base/src/systems/resource_manager.rs	/^    pub fn new() -> Self {$/;"	f
 new	/home/gopiandcode/Documents/Rust/gui-base/src/test_game.rs	/^    pub fn new(resource_manager: &Rc<RefCell<ResourceManager>>) -> Self {$/;"	f
 new	/home/gopiandcode/Documents/Rust/gui-base/src/utilities/game_level.rs	/^    pub fn new(resource_manager: &Rc<RefCell<ResourceManager>>,$/;"	f
@@ -5166,6 +5172,7 @@ repr	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/bindgen-0
 repr	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/bindgen-0.26.3/src/ir/enum_ty.rs	/^    pub fn repr(&self) -> Option<ItemId> {$/;"	f
 repr_list	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/bindgen-0.26.3/src/codegen/helpers.rs	/^    pub fn repr_list(which_ones: &[&str]) -> ast::Attribute {$/;"	f
 reserve_channels	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/sdl2-0.31.0/src/sdl2/mixer/mod.rs	/^pub fn reserve_channels(num: i32) -> i32 {$/;"	f
+reset	/home/gopiandcode/Documents/Rust/gui-base/src/objects/ball.rs	/^    pub fn reset(&mut self, position: &Vector2<GLfloat>, velocity: &Vector2<GLfloat>) {$/;"	f
 reset_isolation	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/sdl2-0.31.0/src/sdl2/video.rs	/^        pub fn reset_isolation(&mut self) -> &mut ContextFlagsBuilder<'a> {$/;"	f
 resizable	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/sdl2-0.31.0/src/sdl2/video.rs	/^    pub fn resizable(&mut self) -> &mut WindowBuilder {$/;"	f
 resize	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/nalgebra-0.15.3/src/base/edition.rs	/^    pub fn resize(self, new_nrows: usize, new_ncols: usize, val: N) -> DMatrix<N>$/;"	f
@@ -5976,6 +5983,7 @@ update	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/sdl2-0.
 update	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/sdl2-0.31.0/src/sdl2/joystick.rs	/^    pub fn update(&self) {$/;"	f
 update	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/sdl2-0.31.0/src/sdl2/render.rs	/^    pub fn update<R>(&mut self,$/;"	f
 update	/home/gopiandcode/Documents/Rust/gui-base/src/game.rs	/^    pub fn update(&mut self, dt: f32) {$/;"	f
+update	/home/gopiandcode/Documents/Rust/gui-base/src/objects/ball.rs	/^    pub fn update(&mut self, dt : f32, window_width: GLuint, window_height: GLuint) -> &Vector2<GLfloat> {$/;"	f
 update	/home/gopiandcode/Documents/Rust/gui-base/src/test_game.rs	/^    pub fn update(&mut self, dt: f32) {}$/;"	f
 update_scaling	/home/gopiandcode/Documents/Rust/gui-base/src/utilities/game_level.rs	/^fn update_scaling(objects: &mut Vec<GameObject>,$/;"	f
 update_screen_size	/home/gopiandcode/Documents/Rust/gui-base/src/utilities/game_level.rs	/^    pub fn update_screen_size(&mut self, screen_width: GLuint, screen_height: GLuint) {$/;"	f
@@ -6063,7 +6071,7 @@ window_mut	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/sdl
 window_pixel_format	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/sdl2-0.31.0/src/sdl2/video.rs	/^    pub fn window_pixel_format(&self) -> PixelFormatEnum {$/;"	f
 with_alpha	/home/gopiandcode/Documents/Rust/gui-base/src/utilities/texture.rs	/^    pub fn with_alpha(&mut self, alpha: bool) -> &mut Self {$/;"	f
 with_codegen_config	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/bindgen-0.26.3/src/lib.rs	/^    pub fn with_codegen_config(mut self, config: CodegenConfig) -> Self {$/;"	f
-with_color	/home/gopiandcode/Documents/Rust/gui-base/src/objects/game_object.rs	/^    pub fn with_color(&mut self, color: &Vector3<GLfloat>) -> &mut Self {$/;"	f
+with_color	/home/gopiandcode/Documents/Rust/gui-base/src/objects/game_object.rs	/^    pub fn with_color(&mut self, color: Vector3<GLfloat>) -> &mut Self {$/;"	f
 with_colors	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/sdl2-0.31.0/src/sdl2/pixels.rs	/^    pub fn with_colors(colors: &[Color]) -> Result<Self, String> {$/;"	f
 with_filter_max	/home/gopiandcode/Documents/Rust/gui-base/src/utilities/texture.rs	/^    pub fn with_filter_max(&mut self, filter_max: GLuint) -> &mut Self {$/;"	f
 with_filter_min	/home/gopiandcode/Documents/Rust/gui-base/src/utilities/texture.rs	/^    pub fn with_filter_min(&mut self, filter_min: GLuint) -> &mut Self {$/;"	f
@@ -6079,12 +6087,12 @@ with_lock_mut	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/
 with_module	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/bindgen-0.26.3/src/ir/context.rs	/^    pub fn with_module<F>(&mut self, module_id: ItemId, cb: F)$/;"	f
 with_multiple_texture_canvas	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/sdl2-0.31.0/src/sdl2/render.rs	/^    pub fn with_multiple_texture_canvas<'a : 's, 's, I, F, U: 's>(&mut self, textures: I, mut f: F)$/;"	f
 with_multiple_texture_canvas	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/sdl2-0.31.0/src/sdl2/render.rs	/^    pub fn with_multiple_texture_canvas<'t : 'a, 'a : 's, 's, I, F, U: 's>(&mut self, textures: I, mut f: F)$/;"	f
-with_position	/home/gopiandcode/Documents/Rust/gui-base/src/objects/game_object.rs	/^    pub fn with_position(&mut self, position: &Vector2<GLfloat>) -> &mut Self {$/;"	f
-with_rotation	/home/gopiandcode/Documents/Rust/gui-base/src/objects/game_object.rs	/^    pub fn with_rotation(&mut self, position: &Vector2<GLfloat>) -> &mut Self {$/;"	f
-with_size	/home/gopiandcode/Documents/Rust/gui-base/src/objects/game_object.rs	/^    pub fn with_size(&mut self, size: &Vector2<GLfloat>) -> &mut Self {$/;"	f
+with_position	/home/gopiandcode/Documents/Rust/gui-base/src/objects/game_object.rs	/^    pub fn with_position(&mut self, position: Vector2<GLfloat>) -> &mut Self {$/;"	f
+with_rotation	/home/gopiandcode/Documents/Rust/gui-base/src/objects/game_object.rs	/^    pub fn with_rotation(&mut self, rotation: GLfloat) -> &mut Self {$/;"	f
+with_size	/home/gopiandcode/Documents/Rust/gui-base/src/objects/game_object.rs	/^    pub fn with_size(&mut self, size: Vector2<GLfloat>) -> &mut Self {$/;"	f
 with_texture_canvas	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/sdl2-0.31.0/src/sdl2/render.rs	/^    pub fn with_texture_canvas<F>(&mut self, texture: &mut Texture, f: F)$/;"	f
 with_variant	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/bindgen-0.26.3/src/codegen/mod.rs	/^    fn with_variant<'b>(self,$/;"	f
-with_velocity	/home/gopiandcode/Documents/Rust/gui-base/src/objects/game_object.rs	/^    pub fn with_velocity(&mut self, velocity: &Vector2<GLfloat>) -> &mut Self {$/;"	f
+with_velocity	/home/gopiandcode/Documents/Rust/gui-base/src/objects/game_object.rs	/^    pub fn with_velocity(&mut self, velocity: Vector2<GLfloat>) -> &mut Self {$/;"	f
 with_wrap_S	/home/gopiandcode/Documents/Rust/gui-base/src/utilities/texture.rs	/^    pub fn with_wrap_S(&mut self, wrap_S: GLuint) -> &mut Self {$/;"	f
 with_wrap_T	/home/gopiandcode/Documents/Rust/gui-base/src/utilities/texture.rs	/^    pub fn with_wrap_T(&mut self, wrap_T: GLuint) -> &mut Self {$/;"	f
 within_namespaces	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/bindgen-0.26.3/src/ir/item.rs	/^    pub fn within_namespaces(&mut self) -> &mut Self {$/;"	f

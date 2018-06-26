@@ -11,9 +11,9 @@ use nalgebra::base::{Vector2};
 use gl::types::{GLfloat};
 
 pub struct Player {
-    object: GameObject,
-    screen_width: GLfloat, 
-    screen_height: GLfloat
+    pub(super) object: GameObject,
+    pub(super) screen_width: GLfloat, 
+    pub(super) screen_height: GLfloat
 }
 
 static PLAYER_VELOCITY: GLfloat = 5.0;
@@ -22,11 +22,11 @@ static PLAYER_SIZE_Y: GLfloat = 20.0;
 
 impl Player {
 
-    pub fn new(position : &Vector2<GLfloat>, (screen_width, screen_height): (GLfloat, GLfloat), sprite: &Rc<RefCell<Texture>>) -> Player {
+    pub fn new(position : Vector2<GLfloat>, (screen_width, screen_height): (GLfloat, GLfloat), sprite: &Rc<RefCell<Texture>>) -> Player {
         let mut object = GameObject::new(sprite);
         object
             .with_position(position)
-            .with_size(&mut Vector2::new(PLAYER_SIZE_X, PLAYER_SIZE_Y));
+            .with_size(Vector2::new(PLAYER_SIZE_X, PLAYER_SIZE_Y));
         Player {
             object:  object.build(),
             screen_width: screen_width,

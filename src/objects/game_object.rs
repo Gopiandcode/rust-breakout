@@ -9,14 +9,14 @@ use gl::types::GLfloat;
 use nalgebra::base::{Matrix4, Unit, Vector2, Vector3, Vector4};
 
 pub struct GameObject {
-    position: Vector2<GLfloat>,
-    size: Vector2<GLfloat>,
-    velocity: Vector2<GLfloat>,
-    rotation: GLfloat,
-    is_solid: bool,
-    is_destroyed: bool,
-    sprite: Rc<RefCell<Texture>>,
-    color: Vector3<GLfloat>,
+    pub(super) position: Vector2<GLfloat>,
+    pub(super) size: Vector2<GLfloat>,
+    pub(super) velocity: Vector2<GLfloat>,
+    pub(super) rotation: GLfloat,
+    pub(super) is_solid: bool,
+    pub(super) is_destroyed: bool,
+    pub(super) sprite: Rc<RefCell<Texture>>,
+    pub(super) color: Vector3<GLfloat>,
 }
 
 pub struct GameObjectBuilder {
@@ -44,18 +44,18 @@ impl GameObjectBuilder {
         }
     }
 
-    pub fn with_position(&mut self, position: &Vector2<GLfloat>) -> &mut Self {
-        self.position = Some(position.clone());
+    pub fn with_position(&mut self, position: Vector2<GLfloat>) -> &mut Self {
+        self.position = Some(position);
         self
     }
 
-    pub fn with_size(&mut self, size: &Vector2<GLfloat>) -> &mut Self {
-        self.size = Some(size.clone());
+    pub fn with_size(&mut self, size: Vector2<GLfloat>) -> &mut Self {
+        self.size = Some(size);
         self
     }
 
-    pub fn with_velocity(&mut self, velocity: &Vector2<GLfloat>) -> &mut Self {
-        self.velocity = Some(velocity.clone());
+    pub fn with_velocity(&mut self, velocity: Vector2<GLfloat>) -> &mut Self {
+        self.velocity = Some(velocity);
         self
     }
 
@@ -67,13 +67,14 @@ impl GameObjectBuilder {
         self.is_destroyed = Some(is_destroyed);
         self
     }
-    pub fn with_color(&mut self, color: &Vector3<GLfloat>) -> &mut Self {
-        self.color = Some(color.clone());
+    pub fn with_color(&mut self, color: Vector3<GLfloat>) -> &mut Self {
+        self.color = Some(color);
         self
     }
 
 
-    pub fn with_rotation(&mut self, position: &Vector2<GLfloat>) -> &mut Self {
+    pub fn with_rotation(&mut self, rotation: GLfloat) -> &mut Self {
+        self.rotation = Some(rotation);
         self
     }
 

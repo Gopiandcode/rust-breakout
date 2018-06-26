@@ -47,14 +47,14 @@ fn create_objects(resource_manager : &ResourceManager,
                     base_pos.x = unit_width * i as GLfloat;
                     base_pos.y = (screen_height as f32) - unit_height * j as GLfloat
                 }
-                let pos = &base_pos;
-                let size = &size_vector;
+                let pos = base_pos.clone();
+                let size = size_vector.clone();
             if value == 1 {
                 let texture = resource_manager.get_texture("block_solid").ok_or("Could not load block_solid texture.")?;
                 let mut obj = GameObject::new(&texture);
                 obj.with_position(pos)
                     .with_size(size)
-                    .with_color(&base_color)
+                    .with_color(base_color.clone())
                     .with_is_solid(true);
                 let obj = obj.build();
                 bricks.push(obj);
@@ -112,7 +112,7 @@ fn create_objects(resource_manager : &ResourceManager,
                 let mut obj = GameObject::new(&texture);
                 obj.with_position(pos)
                     .with_size(size)
-                    .with_color(&color);
+                    .with_color(color);
                 let obj = obj.build();
                 bricks.push(obj);
             }
