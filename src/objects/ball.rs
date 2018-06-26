@@ -12,6 +12,9 @@ use gl::types::{GLfloat, GLuint};
 use nalgebra::base::{Vector2};
 
 
+pub const BALL_RADIUS : GLfloat = 12.5;
+pub const BALL_VELOCITY_X : GLfloat = 100.0;
+pub const BALL_VELOCITY_Y : GLfloat = 350.0;
 
 pub struct BallObject {
     pub(super) object: GameObject,
@@ -34,17 +37,17 @@ impl AsRef<GameObject> for BallObject {
 }
 
 impl BallObject {
-    pub fn new(position: Vector2<GLfloat>, radius: GLfloat, velocity: Vector2<GLfloat>, sprite: &Rc<RefCell<Texture>>) -> Result<Self, String> {
+    pub fn new(position: Vector2<GLfloat>, radius: GLfloat, velocity: Vector2<GLfloat>, sprite: &Rc<RefCell<Texture>>) -> Self {
        let mut builder = GameObject::new(sprite); 
        builder.with_position(position)
               .with_velocity(velocity);
        let builder = builder.build();
 
-       Ok(BallObject {
+       BallObject {
             object: builder,
             radius: radius,
             is_stuck: false
-       })
+       }
 
     }
 

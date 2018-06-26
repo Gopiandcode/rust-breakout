@@ -4,6 +4,7 @@ use utilities::sprite_renderer::SpriteRenderer;
 use utilities::texture::Texture;
 use utilities::game_level::GameLevel;
 use objects::player::Player;
+use objects::ball::BallObject;
 use systems::input_manager::{Input, parse_input};
 
 use std::cell::RefCell;
@@ -31,6 +32,7 @@ pub struct Game {
     current_level: Option<usize>,
     renderer: Option<SpriteRenderer>,
     player: Option<Player>,
+    ball: Option<BallObject>
 }
 
 static mut RENDERER: Option<SpriteRenderer> = None;
@@ -46,6 +48,7 @@ impl Game {
             current_level: None,
             renderer: None,
             player: None,
+            ball: None
         }
     }
     pub fn init(&mut self) { // Loading resources
@@ -81,10 +84,25 @@ impl Game {
         self.current_level = Some(0);
         self.renderer = Some(SpriteRenderer::new(&shader));
 
+
+        // setup player
         {
             let _resource_manager = self.resource_manager.borrow();
             let texture = _resource_manager.get_texture("paddle").expect("Could not load paddle texture");
             self.player = Some(Player::new(Vector2::new((self.width as f32/2.0), 10.0), (width as f32, height as f32), &texture));
+        }
+
+        {
+            let _resource_manager = self.resource_manager.borrow();
+            let texture = _resource_manager.get_texture("face").expect("Could not load face texture");
+            let position = Vector2::new(
+                (self.width as f32/2.0) +  ::objects::player::PLAYER_SIZE_X / 2.0 - ::objects::ball::BALL_RADIUS, 
+                ::objects::ball::BALL_RADIUS * 2.0);
+            let radius = ::objects::ball::BALL_RADIUS;
+            let velocity = Vector2::new(::objects::ball::BALL_VELOCITY_X, ::objects::ball::BALL_VELOCITY_Y);
+
+            
+            self.ball = Some(BallObject::new(position, radius, velocity, &texture));
         }
 
 
@@ -147,7 +165,10 @@ impl Game {
 
     pub fn update(&mut self, dt: f32) {
 
-        let mut player : &mut Player = self.player.as_mut().expect("Game error -render called before player initialized");
+        let mut player : &mut Player = self.player.as_mut().expect("Game error render called before player initialized");
+        let mut ball : &mut BallObject = self.ball.as_mut().expect("Game error render called before ball initialized");
+        println!("ball_pos: {:?}", ball.update(dt, self.width, self.height));
+
         // update player state.
     }
 
@@ -155,6 +176,7 @@ impl Game {
     pub fn render(&mut self) {
         let mut screen: &mut SpriteRenderer = self.renderer.as_mut().expect("Game error - render called before init");
         let mut player : &mut Player = self.player.as_mut().expect("Game error -render called before player initialized");
+        let mut ball : &mut BallObject = self.ball.as_mut().expect("Game error render called before ball initialized");
         let state = self.state.clone();
 
         match state {
@@ -177,6 +199,7 @@ impl Game {
 
                 level.draw(&mut screen);
                 player.as_mut().draw(&mut screen);
+                ball.as_mut().draw(&mut screen);
             }
             _ => return
         }

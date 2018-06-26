@@ -16,9 +16,9 @@ pub struct Player {
     pub(super) screen_height: GLfloat
 }
 
-static PLAYER_VELOCITY: GLfloat = 5.0;
-static PLAYER_SIZE_X: GLfloat = 100.0;
-static PLAYER_SIZE_Y: GLfloat = 20.0;
+pub static PLAYER_VELOCITY: GLfloat = 5.0;
+pub static PLAYER_SIZE_X: GLfloat = 100.0;
+pub static PLAYER_SIZE_Y: GLfloat = 20.0;
 
 impl Player {
 

@@ -202,6 +202,9 @@ AudioStatus	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/sd
 AudioSubsystem	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/sdl2-0.31.0/src/sdl2/audio.rs	/^impl AudioSubsystem {$/;"	i
 Axis	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/sdl2-0.31.0/src/sdl2/controller.rs	/^impl Axis {$/;"	i
 Axis	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/sdl2-0.31.0/src/sdl2/controller.rs	/^pub enum Axis {$/;"	g
+BALL_RADIUS	/home/gopiandcode/Documents/Rust/gui-base/src/objects/ball.rs	/^pub const BALL_RADIUS : GLfloat = 12.5;$/;"	c
+BALL_VELOCITY_X	/home/gopiandcode/Documents/Rust/gui-base/src/objects/ball.rs	/^pub const BALL_VELOCITY_X : GLfloat = 100.0;$/;"	c
+BALL_VELOCITY_Y	/home/gopiandcode/Documents/Rust/gui-base/src/objects/ball.rs	/^pub const BALL_VELOCITY_Y : GLfloat = 350.0;$/;"	c
 BallObject	/home/gopiandcode/Documents/Rust/gui-base/src/objects/ball.rs	/^impl BallObject {$/;"	i
 BallObject	/home/gopiandcode/Documents/Rust/gui-base/src/objects/ball.rs	/^pub struct BallObject {$/;"	s
 Base	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/bindgen-0.26.3/src/ir/comp.rs	/^impl Base {$/;"	i
@@ -1403,9 +1406,9 @@ Output	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/sdl2-0.
 Output	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/sdl2-0.31.0/src/sdl2/rect.rs	/^    type Output = Point;$/;"	T
 Output	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/sdl2-0.31.0/src/sdl2/rect.rs	/^    type Output = Rect;$/;"	T
 Owned	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/nalgebra-0.15.3/src/base/storage.rs	/^pub type Owned<N, R, C = U1> = <DefaultAllocator as Allocator<N, R, C>>::Buffer;$/;"	T
-PLAYER_SIZE_X	/home/gopiandcode/Documents/Rust/gui-base/src/objects/player.rs	/^static PLAYER_SIZE_X: GLfloat = 100.0;$/;"	c
-PLAYER_SIZE_Y	/home/gopiandcode/Documents/Rust/gui-base/src/objects/player.rs	/^static PLAYER_SIZE_Y: GLfloat = 20.0;$/;"	c
-PLAYER_VELOCITY	/home/gopiandcode/Documents/Rust/gui-base/src/objects/player.rs	/^static PLAYER_VELOCITY: GLfloat = 5.0;$/;"	c
+PLAYER_SIZE_X	/home/gopiandcode/Documents/Rust/gui-base/src/objects/player.rs	/^pub static PLAYER_SIZE_X: GLfloat = 100.0;$/;"	c
+PLAYER_SIZE_Y	/home/gopiandcode/Documents/Rust/gui-base/src/objects/player.rs	/^pub static PLAYER_SIZE_Y: GLfloat = 20.0;$/;"	c
+PLAYER_VELOCITY	/home/gopiandcode/Documents/Rust/gui-base/src/objects/player.rs	/^pub static PLAYER_VELOCITY: GLfloat = 5.0;$/;"	c
 Palette	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/sdl2-0.31.0/src/sdl2/pixels.rs	/^impl Palette {$/;"	i
 Palette	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/sdl2-0.31.0/src/sdl2/pixels.rs	/^pub struct Palette {$/;"	s
 ParseCallbacks	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/bindgen-0.26.3/src/callbacks.rs	/^pub trait ParseCallbacks: fmt::Debug + UnwindSafe {$/;"	t
@@ -4646,7 +4649,7 @@ new	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/sdl2-0.31.
 new	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/sdl2-0.31.0/src/sdl2/video.rs	/^    pub fn new(format: PixelFormatEnum, w: i32, h: i32, refresh_rate: i32) -> DisplayMode {$/;"	f
 new	/home/gopiandcode/.cargo/registry/src/github.com-1ecc6299db9ec823/sdl2-0.31.0/src/sdl2/video.rs	/^    pub fn new(v: &VideoSubsystem, title: &str, width: u32, height: u32) -> WindowBuilder {$/;"	f
 new	/home/gopiandcode/Documents/Rust/gui-base/src/game.rs	/^    pub fn new(resource_manager: &Rc<RefCell<ResourceManager>>) -> Self {$/;"	f
-new	/home/gopiandcode/Documents/Rust/gui-base/src/objects/ball.rs	/^    pub fn new(position: Vector2<GLfloat>, radius: GLfloat, velocity: Vector2<GLfloat>, sprite: &Rc<RefCell<Texture>>) -> Result<Self, String> {$/;"	f
+new	/home/gopiandcode/Documents/Rust/gui-base/src/objects/ball.rs	/^    pub fn new(position: Vector2<GLfloat>, radius: GLfloat, velocity: Vector2<GLfloat>, sprite: &Rc<RefCell<Texture>>) -> Self {$/;"	f
 new	/home/gopiandcode/Documents/Rust/gui-base/src/objects/game_object.rs	/^    fn new(sprite: &Rc<RefCell<Texture>>) -> Self {$/;"	f
 new	/home/gopiandcode/Documents/Rust/gui-base/src/objects/game_object.rs	/^    pub fn new(sprite: &Rc<RefCell<Texture>>) -> GameObjectBuilder {$/;"	f
 new	/home/gopiandcode/Documents/Rust/gui-base/src/objects/player.rs	/^    pub fn new(position : Vector2<GLfloat>, (screen_width, screen_height): (GLfloat, GLfloat), sprite: &Rc<RefCell<Texture>>) -> Player {$/;"	f
